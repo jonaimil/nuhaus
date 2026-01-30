@@ -97,19 +97,19 @@ input[type=range]:focus { outline: none; }
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-center p-8 md:p-20 hidden">
         <div class="relative w-full max-w-4xl h-[400px]">
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Network of Introductions</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Nuhaus is built around people, not rooms. Each house connects guests into a wider constellation of creatives, founders, and cultural operators who actively share insight.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Collective of Disciplines</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Nuhaus brings together an eclectic, multidisciplinary group of people — artists, designers, engineers, researchers. Learning emerges through proximity and conversation.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">Reset, Focus, and Continuity</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Designed to restore clarity. Through quiet spaces and deliberate pacing, guests reorient their thinking. The result is renewal — leaving with sharper perspective.
@@ -197,6 +197,20 @@ input[type=range]:focus { outline: none; }
                         </div>
                         <input type="range" id="input-size" min="0" max="3" value="2" step="1">
                     </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
+                            <span>Layer Height</span>
+                            <span id="val-height" class="text-white font-mono">0.7</span>
+                        </div>
+                        <input type="range" id="input-height" min="0.3" max="1.5" value="0.7" step="0.1">
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
+                            <span>Layer Gap</span>
+                            <span id="val-gap" class="text-white font-mono">0.3</span>
+                        </div>
+                        <input type="range" id="input-gap" min="0.1" max="1.0" value="0.3" step="0.1">
+                    </div>
                 </div>
             </div>
 
@@ -210,7 +224,7 @@ input[type=range]:focus { outline: none; }
                         <span class="text-[10px] text-white/30 uppercase tracking-widest">Footprint</span>
                     </div>
                     <!-- Touch area specifically configured -->
-                    <div id="xy-pad" class="w-full h-full border-l border-b border-white/30 relative cursor-crosshair touch-none select-none bg-white/5">
+                    <div id="xy-pad" class="w-full h-full border-l border-b border-white/30 relative cursor-crosshair touch-none select-none">
                         <div class="absolute inset-0 opacity-10 pointer-events-none xy-grid-pattern"></div>
 
                         <!-- Axis Indicators -->
@@ -543,8 +557,12 @@ input[type=range]:focus { outline: none; }
         // --- UI INTERACTION ---
         const sliderFloors = document.getElementById('input-floors');
         const sliderSize = document.getElementById('input-size');
+        const sliderHeight = document.getElementById('input-height');
+        const sliderGap = document.getElementById('input-gap');
         const valFloors = document.getElementById('val-floors');
         const valSize = document.getElementById('val-size');
+        const valHeight = document.getElementById('val-height');
+        const valGap = document.getElementById('val-gap');
         const btnHome = document.getElementById('nav-home');
         const btnConcept = document.getElementById('nav-concept');
         const btnAbout = document.getElementById('nav-about');
@@ -719,6 +737,8 @@ input[type=range]:focus { outline: none; }
 
         sliderFloors.addEventListener('input', (e) => { state.floors = parseInt(e.target.value); valFloors.innerText = state.floors; updateXYThumb(); });
         sliderSize.addEventListener('input', (e) => { state.sizeLevel = parseInt(e.target.value); valSize.innerText = "L" + (state.sizeLevel + 1); updateXYThumb(); });
+        sliderHeight.addEventListener('input', (e) => { state.height = parseFloat(e.target.value); valHeight.innerText = state.height.toFixed(1); });
+        sliderGap.addEventListener('input', (e) => { state.gap = parseFloat(e.target.value); valGap.innerText = state.gap.toFixed(1); });
 
         btnHome.addEventListener('click', setHomeState);
         btnConcept.addEventListener('click', setConceptState);
