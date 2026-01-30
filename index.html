@@ -4,6 +4,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&display=swap');
 
@@ -164,8 +165,8 @@ input[type=range]:focus { outline: none; }
         <!-- Left: Branding & Nav -->
         <div class="flex flex-col md:w-auto pointer-events-auto w-full h-auto md:h-full justify-between z-[40]">
             <div class="flex flex-col mb-4 md:mb-0 space-y-2 order-1">
-                <div class="select-none text-3xl md:text-6xl font-bold text-white tracking-widest uppercase flex items-center gap-1 cursor-pointer" onclick="window.location.reload()">
-                    <span class="origin-left scale-x-125">NUHAUS</span>
+                <div class="select-none cursor-pointer" onclick="window.location.reload()">
+                    <img src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-8 md:h-12 w-auto invert">
                 </div>
                 <p class="leading-relaxed md:text-sm hidden md:block text-xs font-normal text-white/40 max-w-[300px] backdrop-blur-sm">Nuhaus is a curated living environment for creative, technical, and cultural people in Tokyo.</p>
             </div>
@@ -180,42 +181,37 @@ input[type=range]:focus { outline: none; }
         <!-- Builder UI -->
         <div id="builder-ui" class="absolute inset-0 w-full h-full flex flex-col md:flex-row justify-end p-6 md:p-16 transition-opacity duration-500">
 
-            <!-- Desktop Controls -->
-            <div class="hidden md:flex flex-col h-full pointer-events-auto items-center justify-center">
-                <div class="bg-zinc-900/60 w-80 border border-white/5 rounded-2xl p-8 shadow-2xl backdrop-blur-xl space-y-8">
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
-                            <span class="">Stack Height</span>
-                            <span id="val-floors" class="text-white font-mono">6</span>
-                        </div>
-                        <input type="range" id="input-floors" min="1" max="12" value="6" step="1">
+            <!-- Hidden inputs for JS state -->
+            <input type="range" id="input-floors" min="1" max="12" value="6" step="1" class="hidden">
+            <input type="range" id="input-size" min="0" max="3" value="2" step="1" class="hidden">
+            <span id="val-floors" class="hidden">6</span>
+            <span id="val-size" class="hidden">L3</span>
+
+            <!-- Desktop XY Pad -->
+            <div class="hidden md:flex pointer-events-auto items-center justify-center">
+                <div class="relative w-80 h-40">
+                    <div class="absolute -left-6 top-0 h-full flex flex-col justify-center items-end pr-2 pointer-events-none">
+                        <span class="text-[10px] text-white/30 uppercase tracking-widest -rotate-90 origin-center whitespace-nowrap">Height</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
-                            <span>Footprint</span>
-                            <span id="val-size" class="text-white font-mono">L3</span>
-                        </div>
-                        <input type="range" id="input-size" min="0" max="3" value="2" step="1">
+                    <div class="absolute -bottom-6 w-full text-center pointer-events-none">
+                        <span class="text-[10px] text-white/30 uppercase tracking-widest">Footprint</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
-                            <span>Layer Height</span>
-                            <span id="val-height" class="text-white font-mono">0.7</span>
+                    <div id="xy-pad-desktop" class="w-full h-full border-l border-b border-white/30 relative cursor-crosshair touch-none select-none">
+                        <div class="absolute inset-0 opacity-10 pointer-events-none xy-grid-pattern"></div>
+                        <div class="absolute top-0 -left-3 w-1 h-px bg-white/30"></div>
+                        <div class="absolute bottom-0 -left-3 w-1 h-px bg-white/30"></div>
+                        <div class="absolute bottom-0 -left-px w-px h-1 bg-white/30"></div>
+                        <div class="absolute bottom-0 right-0 w-px h-1 bg-white/30"></div>
+                        <div id="xy-thumb-desktop" class="absolute w-8 h-8 -ml-4 -mt-4 z-20 transition-all duration-300 ease-out pointer-events-none" style="left: 66%; top: 54%;">
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)] border border-white"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-black rounded-full"></div>
                         </div>
-                        <input type="range" id="input-height" min="0.3" max="1.5" value="0.7" step="0.1">
-                    </div>
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-sm text-white/50 font-medium tracking-wide">
-                            <span>Layer Gap</span>
-                            <span id="val-gap" class="text-white font-mono">0.3</span>
-                        </div>
-                        <input type="range" id="input-gap" min="0.1" max="1.0" value="0.3" step="0.1">
                     </div>
                 </div>
             </div>
 
             <!-- Mobile XY Pad -->
-            <div class="absolute bottom-0 left-0 w-full pointer-events-auto md:hidden flex flex-col items-center justify-end pb-8 px-8 bg-gradient-to-t from-black via-black/90 to-transparent h-[40vh] z-[50]">
+            <div class="absolute bottom-0 left-0 w-full pointer-events-auto md:hidden flex flex-col items-center justify-end pb-14 px-8 bg-gradient-to-t from-black via-black/90 to-transparent h-[40vh] z-[50]">
                 <div class="relative w-full aspect-[2/1] max-w-[400px]">
                     <div class="absolute -left-6 top-0 h-full flex flex-col justify-center items-end pr-2 pointer-events-none">
                         <span class="text-[10px] text-white/30 uppercase tracking-widest -rotate-90 origin-center whitespace-nowrap">Height</span>
@@ -272,8 +268,9 @@ input[type=range]:focus { outline: none; }
         const state = {
             floors: 6,
             sizeLevel: 2,
-            gap: 0.3,
-            height: 0.7,
+            blockGap: 0.3,
+            layerGap: 1.0,
+            height: 0.3,
             view: 'index',
             expansion: 0,
             chaos: 0,
@@ -347,41 +344,48 @@ input[type=range]:focus { outline: none; }
         });
 
         // --- DATA GENERATION ---
+        // Spiral frame pattern from reference image
+        // Each ring: H blocks on top/bottom edges, V blocks on left/right edges
+        // Ring 0: 2H top, 2H bottom, 1V left, 1V right = 6 blocks (frame)
+        // Ring r: (r+2)H top/bottom, (r+1)V left/right
         function generateMaxTatamiLayout() {
             const blocks = [];
             const maxLevel = CONFIG.MAX_SIZE_LEVEL;
+
+            // Center core: 2 horizontal blocks filling the middle
             blocks.push({ x: 0, z: -0.5, rot: 0, ring: 0 });
             blocks.push({ x: 0, z: 0.5, rot: 0, ring: 0 });
 
-            for (let r = 1; r <= maxLevel; r++) {
-                if (r % 2 !== 0) {
-                    const zPos = r + 0.5;
-                    for (let i = 0; i < r + 1; i++) {
-                        const x = -r + (i * 2);
-                        blocks.push({ x: x, z: -zPos, rot: 0, ring: r });
-                        blocks.push({ x: x, z: zPos, rot: 0, ring: r });
-                    }
-                    const xPos = r + 0.5;
-                    for (let i = 0; i < r; i++) {
-                        const z = -(r - 1) + (i * 2);
-                        blocks.push({ x: -xPos, z: z, rot: Math.PI / 2, ring: r });
-                        blocks.push({ x: xPos, z: z, rot: Math.PI / 2, ring: r });
-                    }
-                } else {
-                    const xPos = r + 0.5;
-                    for (let i = 0; i < r + 1; i++) {
-                        const z = -r + (i * 2);
-                        blocks.push({ x: -xPos, z: z, rot: Math.PI / 2, ring: r });
-                        blocks.push({ x: xPos, z: z, rot: Math.PI / 2, ring: r });
-                    }
-                    const zPos = r + 0.5;
-                    for (let i = 0; i < r; i++) {
-                        const x = -(r - 1) + (i * 2);
-                        blocks.push({ x: x, z: -zPos, rot: 0, ring: r });
-                        blocks.push({ x: x, z: zPos, rot: 0, ring: r });
-                    }
+            for (let ring = 0; ring <= maxLevel; ring++) {
+                const edgePos = 1.5 + ring;  // Distance from center to edge block centers
+                const numH = ring + 2;        // Horizontal blocks per top/bottom edge
+                const numV = ring + 1;        // Vertical blocks per left/right edge
+
+                // Top edge: horizontal blocks
+                for (let i = 0; i < numH; i++) {
+                    const x = -(ring + 1) + i * 2;
+                    blocks.push({ x: x, z: -edgePos, rot: 0, ring: ring });
+                }
+
+                // Bottom edge: horizontal blocks
+                for (let i = 0; i < numH; i++) {
+                    const x = -(ring + 1) + i * 2;
+                    blocks.push({ x: x, z: edgePos, rot: 0, ring: ring });
+                }
+
+                // Left edge: vertical blocks
+                for (let i = 0; i < numV; i++) {
+                    const z = -ring + i * 2;
+                    blocks.push({ x: -edgePos, z: z, rot: Math.PI / 2, ring: ring });
+                }
+
+                // Right edge: vertical blocks
+                for (let i = 0; i < numV; i++) {
+                    const z = -ring + i * 2;
+                    blocks.push({ x: edgePos, z: z, rot: Math.PI / 2, ring: ring });
                 }
             }
+
             return blocks;
         }
 
@@ -400,19 +404,159 @@ input[type=range]:focus { outline: none; }
         }
 
         const residents = [];
-        function createPersonTexture() {
-            const size = 64;
-            const cvs = document.createElement('canvas');
-            cvs.width = size; cvs.height = size;
-            const ctx = cvs.getContext('2d');
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath(); ctx.arc(size/2, 14, 9, 0, Math.PI * 2); ctx.fill();
-            ctx.beginPath(); ctx.roundRect(size/2 - 11, 26, 22, 30, 5); ctx.fill();
-            const tex = new THREE.CanvasTexture(cvs);
-            tex.colorSpace = THREE.SRGBColorSpace;
-            return tex;
+        let lastTime = performance.now();
+
+        // Resident behavior helper - get valid positions on a floor
+        function getValidBlocksForFloor(floorIndex) {
+            const validBlocks = [];
+            maxLayout.forEach((block, idx) => {
+                if (block.ring <= state.sizeLevel) {
+                    validBlocks.push({ ...block, index: idx });
+                }
+            });
+            return validBlocks;
         }
-        const personMaterial = new THREE.SpriteMaterial({ map: createPersonTexture(), color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true });
+
+        function pickRandomTarget(resident) {
+            const validBlocks = getValidBlocksForFloor(resident.floorIndex);
+            if (validBlocks.length === 0) return;
+
+            const targetBlock = validBlocks[Math.floor(Math.random() * validBlocks.length)];
+            const spread = 1.0 + (state.blockGap * 0.2);
+
+            // Add slight randomness within block area
+            const offsetX = (Math.random() - 0.5) * 0.5;
+            const offsetZ = (Math.random() - 0.5) * 0.5;
+
+            resident.target.x = targetBlock.x * spread + offsetX;
+            resident.target.z = targetBlock.z * spread + offsetZ;
+        }
+
+        // Reusable vectors for screen-space direction calculation
+        const cameraRight = new THREE.Vector3();
+        const moveDir = new THREE.Vector3();
+
+        function updateResidentBehavior(deltaTime) {
+            const size = 1.2;
+
+            // Calculate camera's right vector (screen-space X direction)
+            camera.getWorldDirection(cameraRight);
+            cameraRight.cross(camera.up).normalize();
+
+            residents.forEach(resident => {
+                if (!resident.sprite.visible) return;
+
+                switch (resident.state) {
+                    case 'idle':
+                        resident.stateTimer -= deltaTime;
+                        if (resident.stateTimer <= 0) {
+                            pickRandomTarget(resident);
+                            resident.state = 'walking';
+                        }
+                        break;
+
+                    case 'walking':
+                        const dx = resident.target.x - resident.position.x;
+                        const dz = resident.target.z - resident.position.z;
+                        const dist = Math.sqrt(dx * dx + dz * dz);
+
+                        if (dist < 0.15) {
+                            // Reached target - pause for 2-5 seconds
+                            resident.state = 'idle';
+                            resident.stateTimer = 2 + Math.random() * 3;
+                        } else {
+                            // Move towards target
+                            const moveAmount = resident.speed * deltaTime;
+                            resident.position.x += (dx / dist) * moveAmount;
+                            resident.position.z += (dz / dist) * moveAmount;
+
+                            // Calculate screen-space direction using dot product with camera right
+                            moveDir.set(dx, 0, dz).normalize();
+                            const screenDir = moveDir.dot(cameraRight);
+
+                            // Flip based on screen direction (positive = right on screen)
+                            if (Math.abs(screenDir) > 0.1) {
+                                resident.facingRight = screenDir > 0;
+                            }
+                        }
+                        break;
+                }
+
+                // Swap material based on facing direction
+                resident.sprite.material = resident.facingRight ? materialRight : materialLeft;
+            });
+        }
+
+        // Lottie animation setup
+        const lottieSize = 128;
+
+        // Canvas for right-facing (normal)
+        const outputCanvasRight = document.createElement('canvas');
+        outputCanvasRight.width = lottieSize;
+        outputCanvasRight.height = lottieSize;
+        const ctxRight = outputCanvasRight.getContext('2d');
+
+        // Canvas for left-facing (mirrored)
+        const outputCanvasLeft = document.createElement('canvas');
+        outputCanvasLeft.width = lottieSize;
+        outputCanvasLeft.height = lottieSize;
+        const ctxLeft = outputCanvasLeft.getContext('2d');
+
+        const lottieContainer = document.createElement('div');
+        lottieContainer.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:128px;height:128px;overflow:hidden;';
+        document.body.appendChild(lottieContainer);
+
+        const textureRight = new THREE.CanvasTexture(outputCanvasRight);
+        textureRight.colorSpace = THREE.SRGBColorSpace;
+
+        const textureLeft = new THREE.CanvasTexture(outputCanvasLeft);
+        textureLeft.colorSpace = THREE.SRGBColorSpace;
+
+        // Load Lottie animation
+        const lottieAnim = lottie.loadAnimation({
+            container: lottieContainer,
+            renderer: 'canvas',
+            loop: true,
+            autoplay: true,
+            path: 'assets/walking-person.json'
+        });
+
+        // Copy lottie canvas to both outputs (normal and mirrored) with grayscale
+        function updateLottieTexture() {
+            const lottieCanvas = lottieContainer.querySelector('canvas');
+            if (!lottieCanvas) return;
+
+            // Right-facing (normal)
+            ctxRight.clearRect(0, 0, lottieSize, lottieSize);
+            ctxRight.drawImage(lottieCanvas, 0, 0, lottieSize, lottieSize);
+
+            // Left-facing (mirrored)
+            ctxLeft.clearRect(0, 0, lottieSize, lottieSize);
+            ctxLeft.save();
+            ctxLeft.scale(-1, 1);
+            ctxLeft.drawImage(lottieCanvas, -lottieSize, 0, lottieSize, lottieSize);
+            ctxLeft.restore();
+
+            // Apply grayscale to both
+            [ctxRight, ctxLeft].forEach(ctx => {
+                const imageData = ctx.getImageData(0, 0, lottieSize, lottieSize);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const gray = data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11;
+                    data[i] = gray;
+                    data[i + 1] = gray;
+                    data[i + 2] = gray;
+                }
+                ctx.putImageData(imageData, 0, 0);
+            });
+
+            textureRight.needsUpdate = true;
+            textureLeft.needsUpdate = true;
+        }
+
+        // Two materials: right-facing and left-facing
+        const materialRight = new THREE.SpriteMaterial({ map: textureRight, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true });
+        const materialLeft = new THREE.SpriteMaterial({ map: textureLeft, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true });
 
         let instancedMesh;
         const dummy = new THREE.Object3D();
@@ -434,11 +578,23 @@ input[type=range]:focus { outline: none; }
                         const z = block.z * spread;
                         const tooClose = occupied.some(pos => Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.z - z, 2)) < 2.0);
                         if (!tooClose) {
-                            const sprite = new THREE.Sprite(personMaterial);
-                            sprite.scale.set(0.6, 0.6, 0.6);
+                            const startFacingRight = false; // Force ALL to face left for testing
+                            const sprite = new THREE.Sprite(startFacingRight ? materialRight : materialLeft);
+                            sprite.scale.set(1.2, 1.2, 1.2);
                             sprite.visible = false;
                             scene.add(sprite);
-                            residents.push({ floorIndex: f, blockIndex: bIdx, sprite: sprite, baseBlock: block });
+                            residents.push({
+                                floorIndex: f,
+                                blockIndex: bIdx,
+                                sprite: sprite,
+                                baseBlock: block,
+                                position: { x: x, z: z },
+                                target: { x: x, z: z },
+                                state: 'idle',
+                                stateTimer: Math.random() * 3,
+                                speed: 0.4 + Math.random() * 0.3,
+                                facingRight: startFacingRight
+                            });
                             occupied.push({x, z});
                         }
                     }
@@ -448,22 +604,23 @@ input[type=range]:focus { outline: none; }
 
         function updateInstances() {
             if (!instancedMesh) return;
-            const gap = state.gap;
+            const blockGap = state.blockGap;
+            const layerGap = state.layerGap;
             const h = state.height;
             const expansionY = state.expansion * 1.1;
             const chaos = state.chaos;
             state.visualFloors = THREE.MathUtils.lerp(state.visualFloors, state.floors, 0.08);
 
-            const blockW = Math.max(0.1, CONFIG.blockWidth - (gap * 0.5));
-            const blockD = Math.max(0.1, CONFIG.blockDepth - (gap * 0.5));
+            const blockW = Math.max(0.1, CONFIG.blockWidth - (blockGap * 0.5));
+            const blockD = Math.max(0.1, CONFIG.blockDepth - (blockGap * 0.5));
             const blockH = Math.max(0.1, h);
-            const spread = 1.0 + (gap * 0.2);
+            const spread = 1.0 + (blockGap * 0.2);
 
             let instanceIdx = 0;
             residents.forEach(r => { r.sprite.visible = false; });
 
             for (let f = 0; f < CONFIG.MAX_FLOORS; f++) {
-                const floorHeightWithGap = blockH + gap;
+                const floorHeightWithGap = blockH + layerGap;
                 const stackHeight = state.visualFloors * floorHeightWithGap;
                 const baseY = (f * floorHeightWithGap) - (stackHeight / 2);
                 const expansionOffset = (f - (state.visualFloors-1)/2) * expansionY;
@@ -502,7 +659,8 @@ input[type=range]:focus { outline: none; }
                         const res = residents.find(r => r.floorIndex === f && r.blockIndex === b);
                         if (res) {
                             res.sprite.visible = true;
-                            res.sprite.position.set(tx, ty + (blockH * 0.5) + 0.3, tz);
+                            // Use resident's own position, not block position
+                            res.sprite.position.set(res.position.x, ty + (blockH * 0.5) + 0.5, res.position.z);
                             res.sprite.material.opacity = (state.view === 'concept') ? (1.0 - chaos) : 0;
                         }
                     }
@@ -540,7 +698,15 @@ input[type=range]:focus { outline: none; }
 
         function animate() {
             requestAnimationFrame(animate);
+
+            // Calculate delta time for consistent movement
+            const currentTime = performance.now();
+            const deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            updateResidentBehavior(deltaTime);
             updateInstances();
+            updateLottieTexture();
 
             if (state.view === 'index') {
                 controls.autoRotate = true;
@@ -557,12 +723,8 @@ input[type=range]:focus { outline: none; }
         // --- UI INTERACTION ---
         const sliderFloors = document.getElementById('input-floors');
         const sliderSize = document.getElementById('input-size');
-        const sliderHeight = document.getElementById('input-height');
-        const sliderGap = document.getElementById('input-gap');
         const valFloors = document.getElementById('val-floors');
         const valSize = document.getElementById('val-size');
-        const valHeight = document.getElementById('val-height');
-        const valGap = document.getElementById('val-gap');
         const btnHome = document.getElementById('nav-home');
         const btnConcept = document.getElementById('nav-concept');
         const btnAbout = document.getElementById('nav-about');
@@ -572,68 +734,82 @@ input[type=range]:focus { outline: none; }
         const conceptOverlay = document.getElementById('concept-overlay');
         const sections = [document.getElementById('c-sect-0'), document.getElementById('c-sect-1'), document.getElementById('c-sect-2')];
 
-        // XY Control Logic - Optimized for Mobile
-        const xyPad = document.getElementById('xy-pad');
-        const xyThumb = document.getElementById('xy-thumb');
+        // XY Control Logic - Mobile + Desktop
+        const xyPadMobile = document.getElementById('xy-pad');
+        const xyThumbMobile = document.getElementById('xy-thumb');
+        const xyPadDesktop = document.getElementById('xy-pad-desktop');
+        const xyThumbDesktop = document.getElementById('xy-thumb-desktop');
 
-        function updateFromXY(clientX, clientY) {
-            const rect = xyPad.getBoundingClientRect();
-            if (rect.width === 0) return; // Prevention
+        // Track current thumb position (0-1 range)
+        let currentX = 0.66;
+        let currentY = 0.54;
+
+        function updateFromXY(pad, thumb, clientX, clientY) {
+            const rect = pad.getBoundingClientRect();
+            if (rect.width === 0) return;
 
             let x = (clientX - rect.left) / rect.width;
             let y = (clientY - rect.top) / rect.height;
             x = Math.max(0, Math.min(1, x));
             y = Math.max(0, Math.min(1, y));
 
-            xyThumb.style.left = `${x * 100}%`;
-            xyThumb.style.top = `${y * 100}%`;
+            currentX = x;
+            currentY = y;
 
-            const newSize = Math.round(x * 3);
-            if (newSize !== state.sizeLevel) {
-                state.sizeLevel = newSize;
-                sliderSize.value = newSize;
-                valSize.innerText = "L" + (newSize + 1);
+            // Update both thumbs to same position
+            if (xyThumbMobile) {
+                xyThumbMobile.style.left = `${x * 100}%`;
+                xyThumbMobile.style.top = `${y * 100}%`;
             }
-            // Inverted Y logic: Bottom is high floor count, top is low
-            const newFloors = Math.max(1, Math.round((1 - y) * 11 + 1));
-            if (newFloors !== state.floors) {
-                state.floors = newFloors;
-                sliderFloors.value = newFloors;
-                valFloors.innerText = newFloors;
+            if (xyThumbDesktop) {
+                xyThumbDesktop.style.left = `${x * 100}%`;
+                xyThumbDesktop.style.top = `${y * 100}%`;
             }
+
+            // Update state (discrete values for 3D model)
+            state.sizeLevel = Math.round(x * 3);
+            sliderSize.value = state.sizeLevel;
+            state.floors = Math.max(1, Math.round((1 - y) * 11 + 1));
+            sliderFloors.value = state.floors;
         }
 
-        // Using Pointer Events with preventDefault to stop scrolling while dragging
-        xyPad.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            xyPad.setPointerCapture(e.pointerId);
-            xyThumb.classList.remove('duration-300', 'ease-out');
-            xyThumb.classList.add('duration-0');
-            updateFromXY(e.clientX, e.clientY);
-        });
-
-        xyPad.addEventListener('pointermove', (e) => {
-            if (xyPad.hasPointerCapture(e.pointerId)) {
+        function setupXYPad(pad, thumb) {
+            if (!pad || !thumb) return;
+            pad.addEventListener('pointerdown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                updateFromXY(e.clientX, e.clientY);
-            }
-        });
+                pad.setPointerCapture(e.pointerId);
+                thumb.classList.remove('duration-300', 'ease-out');
+                thumb.classList.add('duration-0');
+                updateFromXY(pad, thumb, e.clientX, e.clientY);
+            });
+            pad.addEventListener('pointermove', (e) => {
+                if (pad.hasPointerCapture(e.pointerId)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateFromXY(pad, thumb, e.clientX, e.clientY);
+                }
+            });
+            pad.addEventListener('pointerup', (e) => {
+                e.preventDefault();
+                pad.releasePointerCapture(e.pointerId);
+                thumb.classList.remove('duration-0');
+                thumb.classList.add('duration-300', 'ease-out');
+            });
+        }
 
-        xyPad.addEventListener('pointerup', (e) => {
-            e.preventDefault();
-            xyPad.releasePointerCapture(e.pointerId);
-            xyThumb.classList.remove('duration-0');
-            xyThumb.classList.add('duration-300', 'ease-out');
-            updateXYThumb();
-        });
+        setupXYPad(xyPadMobile, xyThumbMobile);
+        setupXYPad(xyPadDesktop, xyThumbDesktop);
 
         function updateXYThumb() {
-            const xPct = (state.sizeLevel / 3) * 100;
-            const yPct = (1 - ((state.floors - 1) / 11)) * 100;
-            xyThumb.style.left = `${xPct}%`;
-            xyThumb.style.top = `${yPct}%`;
+            if (xyThumbMobile) {
+                xyThumbMobile.style.left = `${currentX * 100}%`;
+                xyThumbMobile.style.top = `${currentY * 100}%`;
+            }
+            if (xyThumbDesktop) {
+                xyThumbDesktop.style.left = `${currentX * 100}%`;
+                xyThumbDesktop.style.top = `${currentY * 100}%`;
+            }
         }
 
         // Nav Logic
@@ -737,8 +913,6 @@ input[type=range]:focus { outline: none; }
 
         sliderFloors.addEventListener('input', (e) => { state.floors = parseInt(e.target.value); valFloors.innerText = state.floors; updateXYThumb(); });
         sliderSize.addEventListener('input', (e) => { state.sizeLevel = parseInt(e.target.value); valSize.innerText = "L" + (state.sizeLevel + 1); updateXYThumb(); });
-        sliderHeight.addEventListener('input', (e) => { state.height = parseFloat(e.target.value); valHeight.innerText = state.height.toFixed(1); });
-        sliderGap.addEventListener('input', (e) => { state.gap = parseFloat(e.target.value); valGap.innerText = state.gap.toFixed(1); });
 
         btnHome.addEventListener('click', setHomeState);
         btnConcept.addEventListener('click', setConceptState);
