@@ -315,7 +315,7 @@ input[type=range]:focus { outline: none; }
         controls.maxPolarAngle = Math.PI / 1.9;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.5;
-        controls.enableZoom = false; // Disable zoom on mobile to prevent messiness
+        controls.enableZoom = true;
 
         // --- LIGHTING ---
         const hemiLight = new THREE.HemisphereLight(0xffffff, 0x111111, 0.4);
