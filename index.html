@@ -98,62 +98,82 @@ input[type=range]:focus { outline: none; }
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-center p-8 md:p-20 hidden">
         <div class="relative w-full max-w-4xl h-[400px]">
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Network of Introductions</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Nuhaus is built around people, not rooms. Each house connects guests into a wider constellation of creatives, founders, and cultural operators who actively share insight.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Collective of Disciplines</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Nuhaus brings together an eclectic, multidisciplinary group of people — artists, designers, engineers, researchers. Learning emerges through proximity and conversation.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">Reset, Focus, and Continuity</h2>
                 <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
                     Designed to restore clarity. Through quiet spaces and deliberate pacing, guests reorient their thinking. The result is renewal — leaving with sharper perspective.
                 </p>
             </div>
-        </div>
 
-        <div class="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-pulse pointer-events-none">
-            <span class="text-[10px] uppercase tracking-widest text-white">Scroll / Drag</span>
-            <iconify-icon icon="solar:double-alt-arrow-down-linear" width="20" height="20" class="text-white"></iconify-icon>
+            <!-- Scroll indicator: down (sections 0-1) -->
+            <div id="scroll-down" class="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse">
+                <span class="text-[10px] uppercase tracking-widest text-white">Scroll</span>
+                <iconify-icon icon="solar:double-alt-arrow-down-linear" width="18" height="18" class="text-white"></iconify-icon>
+            </div>
+
+            <!-- Scroll indicator: up (section 2) -->
+            <div id="scroll-up" class="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse hidden">
+                <iconify-icon icon="solar:double-alt-arrow-up-linear" width="18" height="18" class="text-white"></iconify-icon>
+                <span class="text-[10px] uppercase tracking-widest text-white">Back</span>
+            </div>
         </div>
     </div>
 
     <!-- 4. About / Team Content -->
-    <div id="about-container" class="fixed inset-0 z-[25] pointer-events-none hidden flex flex-col items-center justify-end md:justify-center md:items-end px-4 md:px-16 pt-24 pb-4 md:py-0 transition-all duration-700 opacity-0 translate-y-4">
-        <div class="glass-panel w-full md:w-[680px] max-h-[75vh] md:max-h-[85vh] overflow-y-auto no-scrollbar p-6 md:p-10 rounded-2xl shadow-2xl pointer-events-auto flex flex-col space-y-8">
-            <div class="space-y-3">
-                <h2 class="text-2xl md:text-3xl font-semibold text-white tracking-tight">About Us</h2>
-                <p class="text-white/60 text-sm md:text-base leading-relaxed max-w-lg">
-                    Nuhaus is a collective of architects and technologists building the future of distributed living in Tokyo.
-                </p>
+    <div id="about-container" class="fixed inset-0 z-[25] pointer-events-none hidden flex items-center justify-center px-6 md:px-16 py-8 transition-all duration-700 opacity-0 translate-y-4">
+        <div class="w-full max-w-xl pointer-events-auto">
+            <!-- Header -->
+            <div class="mb-12">
+                <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight mb-4">Team</h2>
+                <p class="text-white/40 text-base md:text-lg max-w-md">Architects and technologists building distributed living in Tokyo.</p>
             </div>
-            <div>
-                <div class="text-xs text-white/30 uppercase tracking-widest font-medium mb-4">Core Team</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="group flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors duration-300">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center text-white font-medium text-sm">SV</div>
-                        <div><div class="text-white text-base font-medium">Sarah Vance</div><div class="text-white/40 text-sm">Founder</div></div>
+
+            <!-- Stacked List -->
+            <div class="space-y-0">
+                <div class="group flex items-center gap-5 py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between gap-4">
+                        <h3 class="text-xl md:text-2xl font-medium text-white">Felix Tao</h3>
+                        <span class="text-white/30 text-sm">Founder</span>
                     </div>
-                    <div class="group flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors duration-300">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center text-white font-medium text-sm">HT</div>
-                        <div><div class="text-white text-base font-medium">Hiroshi Tanaka</div><div class="text-white/40 text-sm">Architect</div></div>
+                </div>
+
+                <div class="group flex items-center gap-5 py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between gap-4">
+                        <h3 class="text-xl md:text-2xl font-medium text-white">Jon Aimil</h3>
+                        <span class="text-white/30 text-sm">Co-founder</span>
+                    </div>
+                </div>
+
+                <div class="group flex items-center gap-5 py-5 border-t border-white/10 border-b hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between gap-4">
+                        <h3 class="text-xl md:text-2xl font-medium text-white">Ila Orbis</h3>
+                        <span class="text-white/30 text-sm">Operations</span>
                     </div>
                 </div>
             </div>
-            <div class="pt-6 border-t border-white/10 space-y-4">
-                 <div class="text-xs text-white/30 uppercase tracking-widest font-medium">Inquiries</div>
-                <a href="mailto:hello@nuhaus.io" class="group flex items-center justify-between p-3 -mx-3 rounded-xl hover:bg-white/5 transition-all">
-                    <div class="flex flex-col">
-                        <span class="text-lg text-white font-medium">hello@nuhaus.io</span>
-                        <span class="text-xs text-white/40">General &amp; Partnership</span>
-                    </div>
-                    <iconify-icon icon="solar:arrow-right-up-linear" class="text-white/50 w-5 h-5 group-hover:text-white transition-all"></iconify-icon>
+
+            <!-- Contact -->
+            <div class="mt-12">
+                <a href="mailto:hello@nuhaus.io" class="inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors group">
+                    <span class="text-base md:text-lg">hello@nuhaus.io</span>
+                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
                 </a>
             </div>
         </div>
@@ -166,9 +186,9 @@ input[type=range]:focus { outline: none; }
         <div class="flex flex-col md:w-auto pointer-events-auto w-full h-auto md:h-full justify-between z-[40]">
             <div class="flex flex-col mb-4 md:mb-0 space-y-2 order-1">
                 <div class="select-none cursor-pointer" onclick="window.location.reload()">
-                    <img src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-8 md:h-12 w-auto invert">
+                    <img id="logo-img" src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-6 md:h-8 w-auto invert">
                 </div>
-                <p class="leading-relaxed md:text-sm hidden md:block text-xs font-normal text-white/40 max-w-[300px] backdrop-blur-sm">Nuhaus is a curated living environment for creative, technical, and cultural people in Tokyo.</p>
+                <p id="tagline" class="leading-relaxed md:text-sm hidden md:block text-xs font-normal text-white/40 backdrop-blur-sm">Nuhaus is a curated living environment for creative, technical, and cultural people in Tokyo.</p>
             </div>
 
             <nav class="flex flex-row md:flex-col space-x-6 md:space-x-0 md:space-y-3 order-2">
@@ -508,9 +528,11 @@ input[type=range]:focus { outline: none; }
 
         const textureRight = new THREE.CanvasTexture(outputCanvasRight);
         textureRight.colorSpace = THREE.SRGBColorSpace;
+        textureRight.premultiplyAlpha = false;
 
         const textureLeft = new THREE.CanvasTexture(outputCanvasLeft);
         textureLeft.colorSpace = THREE.SRGBColorSpace;
+        textureLeft.premultiplyAlpha = false;
 
         // Load Lottie animation
         const lottieAnim = lottie.loadAnimation({
@@ -537,7 +559,7 @@ input[type=range]:focus { outline: none; }
             ctxLeft.drawImage(lottieCanvas, -lottieSize, 0, lottieSize, lottieSize);
             ctxLeft.restore();
 
-            // Apply grayscale to both
+            // Apply grayscale and clean up alpha to both
             [ctxRight, ctxLeft].forEach(ctx => {
                 const imageData = ctx.getImageData(0, 0, lottieSize, lottieSize);
                 const data = imageData.data;
@@ -546,6 +568,10 @@ input[type=range]:focus { outline: none; }
                     data[i] = gray;
                     data[i + 1] = gray;
                     data[i + 2] = gray;
+                    // Zero out alpha for near-transparent or very dark pixels (background cleanup)
+                    if (data[i + 3] < 128 || gray < 10) {
+                        data[i + 3] = 0;
+                    }
                 }
                 ctx.putImageData(imageData, 0, 0);
             });
@@ -555,8 +581,8 @@ input[type=range]:focus { outline: none; }
         }
 
         // Two materials: right-facing and left-facing
-        const materialRight = new THREE.SpriteMaterial({ map: textureRight, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true });
-        const materialLeft = new THREE.SpriteMaterial({ map: textureLeft, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true });
+        const materialRight = new THREE.SpriteMaterial({ map: textureRight, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true, alphaTest: 0.5 });
+        const materialLeft = new THREE.SpriteMaterial({ map: textureLeft, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, depthTest: true, alphaTest: 0.5 });
 
         let instancedMesh;
         const dummy = new THREE.Object3D();
@@ -655,13 +681,13 @@ input[type=range]:focus { outline: none; }
                     dummy.updateMatrix();
                     instancedMesh.setMatrixAt(instanceIdx, dummy.matrix);
 
-                    if (s > 0.8 && chaos < 0.1) {
+                    if (s > 0.8 && chaos < 0.1 && state.view === 'concept') {
                         const res = residents.find(r => r.floorIndex === f && r.blockIndex === b);
                         if (res) {
                             res.sprite.visible = true;
                             // Use resident's own position, not block position
                             res.sprite.position.set(res.position.x, ty + (blockH * 0.5) + 0.5, res.position.z);
-                            res.sprite.material.opacity = (state.view === 'concept') ? (1.0 - chaos) : 0;
+                            res.sprite.material.opacity = 1.0 - chaos;
                         }
                     }
                     instanceIdx++;
@@ -745,6 +771,7 @@ input[type=range]:focus { outline: none; }
         let currentY = 0.54;
 
         function updateFromXY(pad, thumb, clientX, clientY) {
+            if (state.view !== 'index') return;
             const rect = pad.getBoundingClientRect();
             if (rect.width === 0) return;
 
@@ -865,6 +892,9 @@ input[type=range]:focus { outline: none; }
             conceptOverlay.classList.add('opacity-100');
         }
 
+        const scrollDown = document.getElementById('scroll-down');
+        const scrollUp = document.getElementById('scroll-up');
+
         function updateConceptSection(index) {
             sections.forEach((sec, i) => {
                 if(i === index) {
@@ -877,10 +907,20 @@ input[type=range]:focus { outline: none; }
                     sec.style.pointerEvents = 'none';
                 }
             });
+
+            // Toggle scroll indicators
+            if (index === 2) {
+                scrollDown.classList.add('hidden');
+                scrollUp.classList.remove('hidden');
+            } else {
+                scrollDown.classList.remove('hidden');
+                scrollUp.classList.add('hidden');
+            }
+
             const lift = 6;
             const targetY = lift - (index * 6);
-            gsap.to(camera.position, { x: 12, y: targetY + 4, z: 12, duration: 1.4, ease: "power2.inOut" });
-            gsap.to(controls.target, { x: 0, y: targetY, z: 0, duration: 1.4, ease: "power2.inOut" });
+            gsap.to(camera.position, { x: 12, y: targetY + 4, z: 12, duration: 1.2, ease: "power3.out" });
+            gsap.to(controls.target, { x: 0, y: targetY, z: 0, duration: 1.2, ease: "power3.out" });
         }
 
         // Scroll Logic for Concept
@@ -889,7 +929,7 @@ input[type=range]:focus { outline: none; }
 
         window.addEventListener('wheel', (e) => {
             if (state.view !== 'concept' || isScrolling) return;
-            if (Math.abs(e.deltaY) < 30) return;
+            if (Math.abs(e.deltaY) < 20) return;
             const dir = e.deltaY > 0 ? 1 : -1;
             goNextConcept(dir);
         });
@@ -907,7 +947,7 @@ input[type=range]:focus { outline: none; }
                 isScrolling = true;
                 state.conceptIndex = nextIndex;
                 updateConceptSection(state.conceptIndex);
-                setTimeout(() => { isScrolling = false; }, 1000);
+                setTimeout(() => { isScrolling = false; }, 800);
             }
         }
 
@@ -929,5 +969,17 @@ input[type=range]:focus { outline: none; }
         animate();
         setHomeState();
         updateXYThumb();
+
+        // Sync tagline width to logo width
+        const logoImg = document.getElementById('logo-img');
+        const tagline = document.getElementById('tagline');
+        function syncTaglineWidth() {
+            if (logoImg && tagline && logoImg.offsetWidth > 0) {
+                tagline.style.maxWidth = logoImg.offsetWidth + 'px';
+            }
+        }
+        logoImg.addEventListener('load', syncTaglineWidth);
+        window.addEventListener('resize', syncTaglineWidth);
+        syncTaglineWidth();
     </script>
 </body></html>
