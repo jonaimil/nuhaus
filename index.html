@@ -93,27 +93,27 @@ input[type=range]:focus { outline: none; }
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
 
     <!-- 2. Concept Overlay Layer -->
-    <div id="concept-overlay" class="fixed inset-0 bg-black/80 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
+    <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
 
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-center p-8 md:p-20 hidden">
         <div class="relative w-full max-w-4xl h-[400px]">
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Network of Introductions</h2>
-                <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
-                    Nuhaus is built around people, not rooms. Each house connects guests into a wider constellation of creatives, founders, and cultural operators who actively share insight.
+                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
+                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+                    We handle the overwhelming parts: visas, housing, employment, language, cultural navigation. We connect you with the right people and resources. We create community so you're never alone in the uncertainty.<br><br>But more importantly, we give you space to discover. Space to explore neighborhoods. Space to connect with collaborators. Space to figure out who you become when you build in Japan. That's the real work. We're here to support it.
                 </p>
             </div>
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">A Collective of Disciplines</h2>
-                <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
-                    Nuhaus brings together an eclectic, multidisciplinary group of people — artists, designers, engineers, researchers. Learning emerges through proximity and conversation.
+                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
+                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+                    We handle the overwhelming parts: visas, housing, employment, language, cultural navigation. We connect you with the right people and resources. We create community so you're never alone in the uncertainty.<br><br>But more importantly, we give you space to discover. Space to explore neighborhoods. Space to connect with collaborators. Space to figure out who you become when you build in Japan. That's the real work. We're here to support it.
                 </p>
             </div>
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">Reset, Focus, and Continuity</h2>
-                <p class="text-base md:text-xl text-white/60 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
-                    Designed to restore clarity. Through quiet spaces and deliberate pacing, guests reorient their thinking. The result is renewal — leaving with sharper perspective.
+                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">Japan is Ready. Are You?</h2>
+                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+                    Japan needs international talent. The government is opening doors. Companies are recruiting. The creative community is hungry for fresh perspectives. The timing has never been better.<br><br>But beyond what Japan needs is what you need: people asking the same questions, a place to test your assumptions, a community ready to build with you. That's what we've created. The question is: are you ready to explore what's possible?
                 </p>
             </div>
 
@@ -192,9 +192,10 @@ input[type=range]:focus { outline: none; }
             </div>
 
             <nav class="flex flex-row md:flex-col space-x-6 md:space-x-0 md:space-y-3 order-2">
-                <button id="nav-home" class="text-left hover:text-white transition-opacity duration-300 font-normal text-lg md:text-[32px] leading-tight tracking-tight">Builder</button>
+                <button id="nav-home" class="text-left hover:text-white transition-opacity duration-300 font-normal text-lg md:text-[32px] leading-tight tracking-tight">Modeller</button>
                 <button id="nav-concept" class="text-left text-white/50 hover:text-white transition-opacity duration-300 md:text-[32px] leading-tight text-lg font-normal tracking-tight">Concept</button>
-                <button id="nav-about" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-[32px] leading-tight tracking-tight">About</button>
+                <button id="nav-about" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-[32px] leading-tight tracking-tight">Team</button>
+                <a id="nav-connect" href="#" target="_blank" rel="noopener" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-[32px] leading-tight tracking-tight">Connect</a>
             </nav>
         </div>
 
@@ -942,6 +943,13 @@ input[type=range]:focus { outline: none; }
         }, { passive: false });
 
         function goNextConcept(dir) {
+            // If at last section and scrolling down, go to Team page
+            if (state.conceptIndex === 2 && dir > 0) {
+                isScrolling = true;
+                setAboutState();
+                setTimeout(() => { isScrolling = false; }, 800);
+                return;
+            }
             const nextIndex = Math.min(Math.max(state.conceptIndex + dir, 0), 2);
             if (nextIndex !== state.conceptIndex) {
                 isScrolling = true;
