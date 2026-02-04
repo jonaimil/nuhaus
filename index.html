@@ -92,8 +92,8 @@ input[type=range]:focus { outline: none; }
     <!-- 1. The Canvas -->
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
 
-    <!-- 2. Concept Overlay Layer (disabled - may re-enable later) -->
-    <!-- <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div> -->
+    <!-- 2. Concept Overlay Layer -->
+    <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
 
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-start p-6 md:p-16 md:pt-24 md:pb-40 hidden">
@@ -196,7 +196,7 @@ input[type=range]:focus { outline: none; }
                 <button id="nav-home" class="text-left text-white hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Modeller</button>
                 <button id="nav-concept" class="text-left text-white/50 hover:text-white transition-opacity duration-300 md:text-2xl leading-tight text-lg font-normal tracking-tight">Concept</button>
                 <button id="nav-about" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Team</button>
-                <a id="nav-connect" href="#" target="_blank" rel="noopener" class="inline-block text-white/80 hover:text-white hover:border-white/60 transition-all duration-300 font-normal text-sm md:text-base tracking-tight border border-white/40 rounded-full px-4 py-1.5 md:mt-4">Connect</a>
+                <a id="nav-connect" href="#" target="_blank" rel="noopener" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Connect</a>
             </nav>
         </div>
 
@@ -861,8 +861,29 @@ input[type=range]:focus { outline: none; }
             btnAbout.classList.replace('text-white', 'text-white/50');
 
             builderUI.classList.remove('opacity-0', 'pointer-events-none');
-            conceptUI.classList.add('hidden');
-            aboutUI.classList.add('hidden');
+
+            // Fade out concept content before hiding
+            sections.forEach((sec) => {
+                const h2 = sec.querySelector('h2');
+                const p = sec.querySelector('p');
+                gsap.to([h2, p], { opacity: 0, y: -10, duration: 0.4, ease: "power2.in" });
+            });
+
+            setTimeout(() => {
+                conceptUI.classList.add('hidden');
+            }, 400);
+
+            // Fade out Team content if visible
+            if (!aboutUI.classList.contains('hidden')) {
+                const aboutHeader = aboutUI.querySelector('.mb-12');
+                const teamMembers = aboutUI.querySelectorAll('.group');
+                gsap.to([aboutHeader, ...teamMembers], {
+                    opacity: 0, y: -10, duration: 0.4, ease: "power2.in",
+                    onComplete: () => aboutUI.classList.add('hidden')
+                });
+            } else {
+                aboutUI.classList.add('hidden');
+            }
             conceptOverlay?.classList.remove('opacity-100');
             conceptOverlay?.classList.add('opacity-0');
         }
@@ -880,30 +901,59 @@ input[type=range]:focus { outline: none; }
             // Fade out builder UI
             builderUI.classList.add('opacity-0', 'pointer-events-none');
 
-            // Start overlay fade
-            conceptOverlay?.classList.remove('opacity-0');
-            conceptOverlay?.classList.add('opacity-100');
+            // Overlay: show on mobile, hide on desktop for Concept page
+            if (IS_MOBILE) {
+                conceptOverlay?.classList.remove('opacity-0');
+                conceptOverlay?.classList.add('opacity-100');
+            } else {
+                conceptOverlay?.classList.remove('opacity-100');
+                conceptOverlay?.classList.add('opacity-0');
+            }
 
             // Expansion effect with delay
             gsap.to(state, { duration: 2.5, expansion: 1.2, chaos: 0, ease: "power2.out", delay: 0.3 });
 
             // Show concept container but keep content hidden initially
             conceptUI.classList.remove('hidden');
-            aboutUI.classList.add('hidden');
+
+            // Fade out Team content if visible
+            if (!aboutUI.classList.contains('hidden')) {
+                const aboutHeader = aboutUI.querySelector('.mb-12');
+                const teamMembers = aboutUI.querySelectorAll('.group');
+                gsap.to([aboutHeader, ...teamMembers], {
+                    opacity: 0, y: -10, duration: 0.4, ease: "power2.in",
+                    onComplete: () => aboutUI.classList.add('hidden')
+                });
+            } else {
+                aboutUI.classList.add('hidden');
+            }
+
+            // Reset all section content to hidden state before animating
+            sections.forEach((sec) => {
+                const h2 = sec.querySelector('h2');
+                const p = sec.querySelector('p');
+                gsap.set([h2, p], { opacity: 0, y: 20 });
+                sec.classList.add('opacity-0', 'translate-y-8');
+                sec.classList.remove('opacity-100', 'translate-y-0');
+                sec.style.pointerEvents = 'none';
+            });
 
             // Fade in concept content after brief delay
             setTimeout(() => {
                 updateConceptSection(0);
-            }, 500);
+            }, 600);
         }
 
         function setAboutState() {
             state.view = 'about';
             controls.enabled = false;
 
-            // Fade out concept content first
-            const conceptSections = conceptUI.querySelectorAll('.concept-section');
-            conceptSections.forEach(sec => sec.classList.add('opacity-0'));
+            // Fade out concept content with GSAP
+            sections.forEach((sec) => {
+                const h2 = sec.querySelector('h2');
+                const p = sec.querySelector('p');
+                gsap.to([h2, p], { opacity: 0, y: -10, duration: 0.5, ease: "power2.in" });
+            });
 
             // Start camera movement after brief delay
             setTimeout(() => {
@@ -922,9 +972,21 @@ input[type=range]:focus { outline: none; }
             // Hide concept and show Team after content fades
             setTimeout(() => {
                 conceptUI.classList.add('hidden');
+                sections.forEach(sec => sec.classList.add('opacity-0', 'translate-y-8'));
                 aboutUI.classList.remove('hidden');
-                setTimeout(() => { aboutUI.classList.remove('opacity-0', 'translate-y-4'); }, 200);
-            }, 600);
+
+                // Staggered fade-in for Team content
+                const aboutHeader = aboutUI.querySelector('.mb-12');
+                const teamMembers = aboutUI.querySelectorAll('.group');
+
+                gsap.set([aboutHeader, ...teamMembers], { opacity: 0, y: 20 });
+                aboutUI.classList.remove('opacity-0', 'translate-y-4');
+
+                gsap.to(aboutHeader, { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" });
+                teamMembers.forEach((member, i) => {
+                    gsap.to(member, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 + (i * 0.1), ease: "power2.out" });
+                });
+            }, 500);
 
             conceptOverlay?.classList.remove('opacity-0');
             conceptOverlay?.classList.add('opacity-100');
@@ -934,14 +996,36 @@ input[type=range]:focus { outline: none; }
 
         function updateConceptSection(index) {
             sections.forEach((sec, i) => {
+                const h2 = sec.querySelector('h2');
+                const p = sec.querySelector('p');
+
                 if(i === index) {
                     sec.classList.remove('opacity-0', 'translate-y-8');
                     sec.classList.add('opacity-100', 'translate-y-0');
                     sec.style.pointerEvents = 'auto';
+
+                    // Staggered fade-in for heading and paragraph
+                    gsap.fromTo(h2,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+                    );
+                    gsap.fromTo(p,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, delay: 0.15, ease: "power2.out" }
+                    );
                 } else {
-                    sec.classList.add('opacity-0', 'translate-y-8');
-                    sec.classList.remove('opacity-100', 'translate-y-0');
-                    sec.style.pointerEvents = 'none';
+                    // Fade out elements first
+                    gsap.to([h2, p], {
+                        opacity: 0,
+                        y: -10,
+                        duration: 0.4,
+                        ease: "power2.in",
+                        onComplete: () => {
+                            sec.classList.add('opacity-0', 'translate-y-8');
+                            sec.classList.remove('opacity-100', 'translate-y-0');
+                            sec.style.pointerEvents = 'none';
+                        }
+                    });
                 }
             });
 
