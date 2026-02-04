@@ -96,35 +96,35 @@ input[type=range]:focus { outline: none; }
     <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
 
     <!-- 3. Concept Content Container -->
-    <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-center p-8 md:p-20 hidden">
-        <div class="relative w-full max-w-4xl h-[400px]">
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
-                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+    <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-center md:items-start p-8 md:p-20 hidden">
+        <div class="relative w-full max-w-4xl md:max-w-xl md:ml-8 lg:ml-16 h-[400px]">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
+                <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none drop-shadow-lg">
                     We handle the overwhelming parts: visas, housing, employment, language, cultural navigation. We connect you with the right people and resources. We create community so you're never alone in the uncertainty.<br><br>But more importantly, we give you space to discover. Space to explore neighborhoods. Space to connect with collaborators. Space to figure out who you become when you build in Japan. That's the real work. We're here to support it.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
-                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
+                <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">We Make Your Transition Real</h2>
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none drop-shadow-lg">
                     We handle the overwhelming parts: visas, housing, employment, language, cultural navigation. We connect you with the right people and resources. We create community so you're never alone in the uncertainty.<br><br>But more importantly, we give you space to discover. Space to explore neighborhoods. Space to connect with collaborators. Space to figure out who you become when you build in Japan. That's the real work. We're here to support it.
                 </p>
             </div>
-            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center text-center transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
-                <h2 class="text-3xl md:text-6xl font-semibold text-white tracking-tight leading-tight mb-5">Japan is Ready. Are You?</h2>
-                <p class="text-base md:text-xl text-white/80 leading-relaxed font-normal max-w-2xl drop-shadow-lg">
+            <div class="concept-section absolute inset-0 flex flex-col justify-center items-center md:items-start text-center md:text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
+                <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">Japan is Ready. Are You?</h2>
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none drop-shadow-lg">
                     Japan needs international talent. The government is opening doors. Companies are recruiting. The creative community is hungry for fresh perspectives. The timing has never been better.<br><br>But beyond what Japan needs is what you need: people asking the same questions, a place to test your assumptions, a community ready to build with you. That's what we've created. The question is: are you ready to explore what's possible?
                 </p>
             </div>
 
             <!-- Scroll indicator: down (sections 0-1) -->
-            <div id="scroll-down" class="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse">
+            <div id="scroll-down" class="absolute bottom-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 flex flex-col items-center gap-1 opacity-40 animate-pulse">
                 <span class="text-[10px] uppercase tracking-widest text-white">Scroll</span>
                 <iconify-icon icon="solar:double-alt-arrow-down-linear" width="18" height="18" class="text-white"></iconify-icon>
             </div>
 
             <!-- Scroll indicator: up (section 2) -->
-            <div id="scroll-up" class="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse hidden">
+            <div id="scroll-up" class="absolute top-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 flex flex-col items-center gap-1 opacity-40 animate-pulse hidden">
                 <iconify-icon icon="solar:double-alt-arrow-up-linear" width="18" height="18" class="text-white"></iconify-icon>
                 <span class="text-[10px] uppercase tracking-widest text-white">Back</span>
             </div>
@@ -140,43 +140,49 @@ input[type=range]:focus { outline: none; }
                 <p class="text-white/40 text-base md:text-lg max-w-md">Architects and technologists building distributed living in Tokyo.</p>
             </div>
 
-            <!-- Stacked List -->
-            <div class="space-y-0">
-                <div class="group flex items-center gap-5 py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
-                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
-                    <div class="flex-1 flex items-baseline justify-between gap-4">
-                        <h3 class="text-xl md:text-2xl font-medium text-white">Felix Tao</h3>
-                        <span class="text-white/30 text-sm">Founder</span>
+            <!-- Team Members -->
+            <div class="space-y-6">
+                <div class="group py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0 mt-1"></div>
+                        <div class="flex-1">
+                            <div class="flex items-baseline justify-between gap-4 mb-2">
+                                <h3 class="text-xl md:text-2xl font-medium text-white">Felix Tao</h3>
+                                <span class="text-white/30 text-sm">Founder</span>
+                            </div>
+                            <p class="text-white/50 text-sm leading-relaxed">Building systems for creative communities. Previously in real estate development and urban planning across Asia.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="group flex items-center gap-5 py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
-                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
-                    <div class="flex-1 flex items-baseline justify-between gap-4">
-                        <h3 class="text-xl md:text-2xl font-medium text-white">Jon Aimil</h3>
-                        <span class="text-white/30 text-sm">Co-founder</span>
+                <div class="group py-5 border-t border-white/10 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0 mt-1"></div>
+                        <div class="flex-1">
+                            <div class="flex items-baseline justify-between gap-4 mb-2">
+                                <h3 class="text-xl md:text-2xl font-medium text-white">Jon Aimil</h3>
+                                <span class="text-white/30 text-sm">Co-founder</span>
+                            </div>
+                            <p class="text-white/50 text-sm leading-relaxed">Design and technology. Focused on digital products and spatial experiences that bring people together.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="group flex items-center gap-5 py-5 border-t border-white/10 border-b hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
-                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
-                    <div class="flex-1 flex items-baseline justify-between gap-4">
-                        <h3 class="text-xl md:text-2xl font-medium text-white">Ila Orbis</h3>
-                        <span class="text-white/30 text-sm">Operations</span>
+                <div class="group py-5 border-t border-white/10 border-b hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0 mt-1"></div>
+                        <div class="flex-1">
+                            <div class="flex items-baseline justify-between gap-4 mb-2">
+                                <h3 class="text-xl md:text-2xl font-medium text-white">Ila Orbis</h3>
+                                <span class="text-white/30 text-sm">Operations</span>
+                            </div>
+                            <p class="text-white/50 text-sm leading-relaxed">Guest experience and community programming. Background in hospitality and cross-cultural event production.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Contact -->
-            <div class="mt-12">
-                <a href="mailto:hello@nuhaus.io" class="inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors group">
-                    <span class="text-base md:text-lg">hello@nuhaus.io</span>
-                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
+                    </div>
     </div>
 
     <!-- 5. Main UI Layer -->
@@ -878,10 +884,10 @@ input[type=range]:focus { outline: none; }
 
         function setAboutState() {
             state.view = 'about';
-            controls.enabled = true;
-            gsap.to(camera.position, { duration: 2.0, x: -18, y: 8, z: -10, ease: "power3.inOut" });
-            gsap.to(controls.target, { duration: 2.0, x: 0, y: 0, z: 0, ease: "power3.inOut" });
-            gsap.to(state, { duration: 2.0, chaos: 1.0, expansion: 0.5, ease: "power3.out" });
+            controls.enabled = false;
+            gsap.to(camera.position, { duration: 3.0, x: -14, y: 10, z: -12, ease: "power2.inOut" });
+            gsap.to(controls.target, { duration: 3.0, x: 0, y: 0, z: 0, ease: "power2.inOut" });
+            gsap.to(state, { duration: 3.0, chaos: 1.0, expansion: 0.5, ease: "power2.out" });
             btnHome.classList.replace('text-white', 'text-white/50');
             btnConcept.classList.replace('text-white', 'text-white/50');
             btnAbout.classList.replace('text-white/50', 'text-white');
@@ -920,8 +926,11 @@ input[type=range]:focus { outline: none; }
 
             const lift = 6;
             const targetY = lift - (index * 6);
-            gsap.to(camera.position, { x: 12, y: targetY + 4, z: 12, duration: 1.2, ease: "power3.out" });
-            gsap.to(controls.target, { x: 0, y: targetY, z: 0, duration: 1.2, ease: "power3.out" });
+            // Desktop: offset camera to show 3D on right side
+            const isMobile = window.innerWidth < 768;
+            const targetX = isMobile ? 0 : -4;
+            gsap.to(camera.position, { x: isMobile ? 12 : 8, y: targetY + 4, z: 12, duration: 1.2, ease: "power3.out" });
+            gsap.to(controls.target, { x: targetX, y: targetY, z: 0, duration: 1.2, ease: "power3.out" });
         }
 
         // Scroll Logic for Concept

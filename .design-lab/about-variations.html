@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuhaus About Page - Design Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Afacad', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+
+        .variation {
+            min-height: 100vh;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .variation-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            z-index: 100;
+        }
+
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body>
+    <!-- Variation Selector -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-white/10 px-6 py-4 flex gap-4 items-center">
+        <span class="text-white/40 text-sm uppercase tracking-widest">Design Lab</span>
+        <div class="flex gap-2">
+            <a href="#v1" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition-colors">V1</a>
+            <a href="#v2" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition-colors">V2</a>
+            <a href="#v3" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition-colors">V3</a>
+            <a href="#v4" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition-colors">V4</a>
+            <a href="#v5" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition-colors">V5</a>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════
+         VARIATION 1: Floating Cards Grid
+         Minimal scattered cards that echo the chaos of the 3D building
+         ═══════════════════════════════════════════════════════════════════════════ -->
+    <section id="v1" class="variation flex items-center justify-center p-8 pt-24">
+        <div class="variation-label">V1: Floating Cards</div>
+
+        <div class="max-w-5xl w-full">
+            <!-- Header -->
+            <div class="mb-16 text-center">
+                <p class="text-white/30 text-xs uppercase tracking-[0.3em] mb-3">The Team</p>
+                <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight">Building Nuhaus</h2>
+            </div>
+
+            <!-- Floating Cards Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Card 1 -->
+                <div class="group p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/10 transition-all duration-500">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 mb-5 overflow-hidden">
+                        <div class="w-full h-full bg-white/10"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-1">Felix Tao</h3>
+                    <p class="text-white/40 text-sm">Founder</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/10 transition-all duration-500">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 mb-5 overflow-hidden">
+                        <div class="w-full h-full bg-white/10"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-1">Jon Aimil</h3>
+                    <p class="text-white/40 text-sm">Co-founder</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/10 transition-all duration-500">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 mb-5 overflow-hidden">
+                        <div class="w-full h-full bg-white/10"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-1">Yuki Tanaka</h3>
+                    <p class="text-white/40 text-sm">Operations</p>
+                </div>
+
+                <!-- Contact Card -->
+                <div class="group p-6 rounded-2xl border border-dashed border-white/20 hover:border-white/40 transition-all duration-500 flex flex-col justify-center">
+                    <p class="text-white/30 text-xs uppercase tracking-widest mb-2">Get in touch</p>
+                    <a href="mailto:hello@nuhaus.io" class="text-white hover:text-white/80 transition-colors">hello@nuhaus.io</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════
+         VARIATION 2: Horizontal Scroll Strip
+         Team displayed as a horizontal filmstrip with large avatars
+         ═══════════════════════════════════════════════════════════════════════════ -->
+    <section id="v2" class="variation flex flex-col justify-center p-8 pt-24">
+        <div class="variation-label">V2: Horizontal Strip</div>
+
+        <div class="max-w-7xl mx-auto w-full">
+            <!-- Header aligned left -->
+            <div class="mb-12">
+                <p class="text-white/30 text-xs uppercase tracking-[0.3em] mb-3">About</p>
+                <h2 class="text-4xl md:text-6xl font-semibold text-white tracking-tight max-w-2xl leading-tight">
+                    A collective building the future of living
+                </h2>
+            </div>
+
+            <!-- Horizontal scroll container -->
+            <div class="flex gap-8 overflow-x-auto pb-8 -mx-8 px-8 snap-x snap-mandatory" style="scrollbar-width: none;">
+                <!-- Member 1 -->
+                <div class="flex-shrink-0 w-64 snap-start">
+                    <div class="aspect-[3/4] rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.02] mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-white/5"></div>
+                    </div>
+                    <h3 class="text-xl font-medium text-white">Felix Tao</h3>
+                    <p class="text-white/40">Founder</p>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="flex-shrink-0 w-64 snap-start">
+                    <div class="aspect-[3/4] rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.02] mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-white/5"></div>
+                    </div>
+                    <h3 class="text-xl font-medium text-white">Jon Aimil</h3>
+                    <p class="text-white/40">Co-founder</p>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="flex-shrink-0 w-64 snap-start">
+                    <div class="aspect-[3/4] rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.02] mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-white/5"></div>
+                    </div>
+                    <h3 class="text-xl font-medium text-white">Yuki Tanaka</h3>
+                    <p class="text-white/40">Operations</p>
+                </div>
+
+            </div>
+
+            <!-- Contact footer -->
+            <div class="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
+                <div>
+                    <p class="text-white/30 text-xs uppercase tracking-widest mb-1">Inquiries</p>
+                    <a href="mailto:hello@nuhaus.io" class="text-xl text-white hover:text-white/80 transition-colors">hello@nuhaus.io</a>
+                </div>
+                <div class="text-white/30 text-sm">Tokyo, Japan</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════
+         VARIATION 3: Stacked List
+         Ultra-minimal vertical list with hover reveals
+         ═══════════════════════════════════════════════════════════════════════════ -->
+    <section id="v3" class="variation flex items-center justify-center p-8 pt-24">
+        <div class="variation-label">V3: Stacked List</div>
+
+        <div class="max-w-2xl w-full">
+            <!-- Header -->
+            <div class="mb-16">
+                <h2 class="text-5xl md:text-7xl font-semibold text-white tracking-tight mb-4">Team</h2>
+                <p class="text-white/40 text-lg max-w-md">Architects and technologists building distributed living in Tokyo.</p>
+            </div>
+
+            <!-- Stacked List -->
+            <div class="space-y-0">
+                <!-- Row 1 -->
+                <div class="group flex items-center gap-6 py-6 border-t border-white/10 hover:bg-white/[0.02] -mx-6 px-6 transition-colors cursor-default">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between">
+                        <h3 class="text-2xl font-medium text-white">Felix Tao</h3>
+                        <span class="text-white/30">Founder</span>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="group flex items-center gap-6 py-6 border-t border-white/10 hover:bg-white/[0.02] -mx-6 px-6 transition-colors cursor-default">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between">
+                        <h3 class="text-2xl font-medium text-white">Jon Aimil</h3>
+                        <span class="text-white/30">Co-founder</span>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="group flex items-center gap-6 py-6 border-t border-white/10 border-b hover:bg-white/[0.02] -mx-6 px-6 transition-colors cursor-default">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex-shrink-0"></div>
+                    <div class="flex-1 flex items-baseline justify-between">
+                        <h3 class="text-2xl font-medium text-white">Yuki Tanaka</h3>
+                        <span class="text-white/30">Operations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="mt-16">
+                <a href="mailto:hello@nuhaus.io" class="inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors group">
+                    <span class="text-lg">hello@nuhaus.io</span>
+                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════
+         VARIATION 4: Split Layout
+         Large photo on left, team list on right (magazine style)
+         ═══════════════════════════════════════════════════════════════════════════ -->
+    <section id="v4" class="variation flex items-center p-8 pt-24">
+        <div class="variation-label">V4: Split Layout</div>
+
+        <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 md:gap-20">
+            <!-- Left: Large visual -->
+            <div class="aspect-square md:aspect-auto md:h-[70vh] rounded-3xl bg-gradient-to-br from-white/10 via-white/[0.03] to-transparent overflow-hidden relative">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent_60%)]"></div>
+                <div class="absolute bottom-8 left-8 right-8">
+                    <p class="text-white/30 text-xs uppercase tracking-widest mb-2">Tokyo, Japan</p>
+                    <h2 class="text-3xl md:text-4xl font-semibold text-white leading-tight">A home for builders, makers, and dreamers</h2>
+                </div>
+            </div>
+
+            <!-- Right: Team + Contact -->
+            <div class="flex flex-col justify-center">
+                <div class="mb-10">
+                    <p class="text-white/30 text-xs uppercase tracking-[0.3em] mb-3">The Team</p>
+                </div>
+
+                <!-- Compact team grid -->
+                <div class="grid grid-cols-2 gap-x-8 gap-y-6 mb-12">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5"></div>
+                        <div>
+                            <h3 class="text-white font-medium">Felix Tao</h3>
+                            <p class="text-white/40 text-sm">Founder</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5"></div>
+                        <div>
+                            <h3 class="text-white font-medium">Jon Aimil</h3>
+                            <p class="text-white/40 text-sm">Co-founder</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-white/5"></div>
+                        <div>
+                            <h3 class="text-white font-medium">Yuki Tanaka</h3>
+                            <p class="text-white/40 text-sm">Operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-white/10 pt-8">
+                    <p class="text-white/30 text-xs uppercase tracking-widest mb-3">Contact</p>
+                    <a href="mailto:hello@nuhaus.io" class="text-2xl text-white hover:text-white/80 transition-colors">hello@nuhaus.io</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════
+         VARIATION 5: Floating Orbs
+         Abstract circular avatars arranged organically
+         ═══════════════════════════════════════════════════════════════════════════ -->
+    <section id="v5" class="variation flex items-center justify-center p-8 pt-24 overflow-hidden">
+        <div class="variation-label">V5: Constellation</div>
+
+        <div class="relative w-full max-w-4xl aspect-square md:aspect-video flex items-center justify-center">
+            <!-- Central text -->
+            <div class="text-center z-10 relative">
+                <h2 class="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4">Nuhaus</h2>
+                <p class="text-white/40 text-lg mb-8">hello@nuhaus.io</p>
+            </div>
+
+            <!-- Floating orbs positioned around center -->
+            <!-- Member 1 - Top left -->
+            <div class="absolute top-[10%] left-[15%] group cursor-default">
+                <div class="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-white/15 to-white/[0.02] border border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                    <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p class="text-white text-sm font-medium">Felix</p>
+                        <p class="text-white/40 text-xs">Founder</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 2 - Top right -->
+            <div class="absolute top-[5%] right-[20%] group cursor-default">
+                <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-white/15 to-white/[0.02] border border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                    <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p class="text-white text-sm font-medium">Jon Aimil</p>
+                        <p class="text-white/40 text-xs">Co-founder</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 3 - Bottom -->
+            <div class="absolute bottom-[20%] left-[40%] group cursor-default">
+                <div class="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-white/15 to-white/[0.02] border border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                    <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p class="text-white text-sm font-medium">Yuki</p>
+                        <p class="text-white/40 text-xs">Operations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connecting lines (subtle) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <line x1="25" y1="20" x2="50" y2="50" stroke="white" stroke-width="0.1"/>
+                <line x1="75" y1="15" x2="50" y2="50" stroke="white" stroke-width="0.1"/>
+                <line x1="50" y1="75" x2="50" y2="50" stroke="white" stroke-width="0.1"/>
+            </svg>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Lab - 3D Animation Variants</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #e5e5e5;
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            padding: 48px;
+        }
+        h1 {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.4;
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 48px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .card:hover {
+            border-color: #444;
+            transform: translateY(-2px);
+        }
+        .card a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .preview {
+            aspect-ratio: 16/10;
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+        .preview span {
+            font-size: 48px;
+            opacity: 0.2;
+        }
+        .info {
+            padding: 20px;
+        }
+        .info h3 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .info p {
+            font-size: 13px;
+            opacity: 0.5;
+            line-height: 1.5;
+        }
+        .open-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #222;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .open-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Design Lab</h1>
+    <h2>3D Building Animation Variants</h2>
+
+    <div class="grid">
+        <div class="card">
+            <a href="variant-1.html">
+                <div class="preview"><span>1</span></div>
+                <div class="info">
+                    <h3>Layered Wave Hover</h3>
+                    <p>Each floor hovers at different phases, creating a slow vertical wave that ripples through the building. Magnetic levitation feel.</p>
+                    <span class="open-btn">Open Variant</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="variant-2.html">
+                <div class="preview"><span>2</span></div>
+                <div class="info">
+                    <h3>Cluster Micro-Adjustments</h3>
+                    <p>Blocks grouped by ring make tiny positional shifts at irregular intervals. Like sensors recalibrating or servos making corrections.</p>
+                    <span class="open-btn">Open Variant</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="variant-3.html">
+                <div class="preview"><span>3</span></div>
+                <div class="info">
+                    <h3>Staggered Pulse</h3>
+                    <p>Combines hover + micro-adjust. Floors pulse upward in sequence like a diagnostic scan, with small position jitter for texture.</p>
+                    <span class="open-btn">Open Variant</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="variant-4.html">
+                <div class="preview"><span>4</span></div>
+                <div class="info">
+                    <h3>Radial Ripple Hover</h3>
+                    <p>Hover wave radiates from center outward through rings. Core blocks lift first, outer blocks follow. Creates breathing from within.</p>
+                    <span class="open-btn">Open Variant</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="variant-5.html">
+                <div class="preview"><span>5</span></div>
+                <div class="info">
+                    <h3>Idle Drift + Snap</h3>
+                    <p>Blocks slowly drift out of position, then periodically snap back. Like a system doing lazy corrections. Robotic yet organic.</p>
+                    <span class="open-btn">Open Variant</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

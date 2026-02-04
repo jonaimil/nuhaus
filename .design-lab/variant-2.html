@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variant 2: Cluster Micro-Adjustments</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #050505; overflow: hidden; font-family: system-ui, sans-serif; }
+        canvas { display: block; }
+        .label {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            color: white;
+            z-index: 100;
+        }
+        .label h1 { font-size: 14px; font-weight: 500; opacity: 0.9; margin-bottom: 4px; }
+        .label p { font-size: 12px; opacity: 0.5; max-width: 300px; line-height: 1.5; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="label">
+        <h1>Variant 2: Cluster Micro-Adjustments</h1>
+        <p>Blocks grouped by ring make positional shifts at irregular intervals. Sensor recalibration feel with visible movement.</p>
+    </div>
+    <canvas id="gl"></canvas>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        const canvas = document.getElementById('gl');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050505);
+        scene.fog = new THREE.Fog(0x050505, 15, 50);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(14, 10, 14);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.3;
+
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x111111, 0.5));
+        const mainLight = new THREE.DirectionalLight(0xffffff, 4);
+        mainLight.position.set(10, 20, 10);
+        scene.add(mainLight);
+
+        // Config matching original
+        const FLOORS = 6;
+        const BLOCK_GAP = 0.3;
+        const LAYER_GAP = 1.0;
+        const BLOCK_HEIGHT = 0.3;
+        const SPREAD = 1.0 + (BLOCK_GAP * 0.2);
+
+        const geometry = new THREE.BoxGeometry(2, BLOCK_HEIGHT, 1);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.1,
+            roughness: 0.2,
+            metalness: 0.1
+        });
+
+        function generateLayout() {
+            const blocks = [];
+            blocks.push({ x: 0, z: -0.5, rot: 0, ring: -1 });
+            blocks.push({ x: 0, z: 0.5, rot: 0, ring: -1 });
+            for (let ring = 0; ring <= 2; ring++) {
+                const edgePos = 1.5 + ring;
+                const numH = ring + 2;
+                const numV = ring + 1;
+                for (let i = 0; i < numH; i++) {
+                    blocks.push({ x: -(ring + 1) + i * 2, z: -edgePos, rot: 0, ring });
+                    blocks.push({ x: -(ring + 1) + i * 2, z: edgePos, rot: 0, ring });
+                }
+                for (let i = 0; i < numV; i++) {
+                    blocks.push({ x: -edgePos, z: -ring + i * 2, rot: Math.PI / 2, ring });
+                    blocks.push({ x: edgePos, z: -ring + i * 2, rot: Math.PI / 2, ring });
+                }
+            }
+            return blocks;
+        }
+
+        const layout = generateLayout();
+        const meshes = [];
+
+        // Cluster state - each ring on each floor is a cluster
+        const clusters = {};
+        for (let f = 0; f < FLOORS; f++) {
+            for (let r = -1; r <= 2; r++) {
+                const key = `${f}_${r}`;
+                clusters[key] = {
+                    offsetX: 0, offsetY: 0, offsetZ: 0,
+                    targetX: 0, targetY: 0, targetZ: 0,
+                    nextAdjust: Math.random() * 2
+                };
+            }
+        }
+
+        for (let f = 0; f < FLOORS; f++) {
+            const floorHeight = BLOCK_HEIGHT + LAYER_GAP;
+            const stackHeight = FLOORS * floorHeight;
+            const baseY = (f * floorHeight) - (stackHeight / 2);
+
+            layout.forEach(block => {
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(block.x * SPREAD, baseY, block.z * SPREAD);
+                mesh.rotation.y = block.rot;
+                mesh.userData = {
+                    floorIndex: f,
+                    ring: block.ring,
+                    baseX: block.x * SPREAD,
+                    baseY,
+                    baseZ: block.z * SPREAD
+                };
+                scene.add(mesh);
+                meshes.push(mesh);
+            });
+        }
+
+        let lastTime = 0;
+        function animate(time) {
+            requestAnimationFrame(animate);
+            const t = time * 0.001;
+            const dt = t - lastTime;
+            lastTime = t;
+
+            // Update cluster targets periodically
+            Object.entries(clusters).forEach(([key, cluster]) => {
+                cluster.nextAdjust -= dt;
+                if (cluster.nextAdjust <= 0) {
+                    // More pronounced micro-adjustment targets
+                    cluster.targetX = (Math.random() - 0.5) * 0.15;
+                    cluster.targetY = (Math.random() - 0.5) * 0.2;
+                    cluster.targetZ = (Math.random() - 0.5) * 0.15;
+                    cluster.nextAdjust = 1.0 + Math.random() * 2.5; // 1-3.5s between adjustments
+                }
+                // Smooth interpolation to target
+                cluster.offsetX += (cluster.targetX - cluster.offsetX) * 0.03;
+                cluster.offsetY += (cluster.targetY - cluster.offsetY) * 0.03;
+                cluster.offsetZ += (cluster.targetZ - cluster.offsetZ) * 0.03;
+            });
+
+            meshes.forEach(mesh => {
+                const { floorIndex, ring, baseX, baseY, baseZ } = mesh.userData;
+                const cluster = clusters[`${floorIndex}_${ring}`];
+
+                mesh.position.x = baseX + cluster.offsetX;
+                mesh.position.y = baseY + cluster.offsetY;
+                mesh.position.z = baseZ + cluster.offsetZ;
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate(0);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
