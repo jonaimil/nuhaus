@@ -1,8 +1,10 @@
 ---
 id: REQ-023
 title: Style Connect button as CTA
-status: pending
+status: reverted
 created_at: 2025-02-04T14:36:00Z
+reverted_at: 2025-02-04T14:55:00Z
+reverted_by: REQ-024
 ---
 
 # Style Connect button as CTA
