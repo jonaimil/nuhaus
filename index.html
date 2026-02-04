@@ -865,16 +865,30 @@ input[type=range]:focus { outline: none; }
             state.view = 'concept';
             state.conceptIndex = 0;
             controls.enabled = false;
-            gsap.to(state, { duration: 1.5, expansion: 1.2, chaos: 0, ease: "power2.out" });
-            updateConceptSection(0);
+
+            // Update nav immediately
             btnHome.classList.replace('text-white', 'text-white/50');
             btnConcept.classList.replace('text-white/50', 'text-white');
             btnAbout.classList.replace('text-white', 'text-white/50');
+
+            // Fade out builder UI
             builderUI.classList.add('opacity-0', 'pointer-events-none');
-            conceptUI.classList.remove('hidden');
-            aboutUI.classList.add('hidden');
+
+            // Start overlay fade
             conceptOverlay.classList.remove('opacity-0');
             conceptOverlay.classList.add('opacity-100');
+
+            // Expansion effect with delay
+            gsap.to(state, { duration: 2.5, expansion: 1.2, chaos: 0, ease: "power2.out", delay: 0.3 });
+
+            // Show concept container but keep content hidden initially
+            conceptUI.classList.remove('hidden');
+            aboutUI.classList.add('hidden');
+
+            // Fade in concept content after brief delay
+            setTimeout(() => {
+                updateConceptSection(0);
+            }, 500);
         }
 
         function setAboutState() {
