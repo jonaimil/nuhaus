@@ -880,16 +880,32 @@ input[type=range]:focus { outline: none; }
         function setAboutState() {
             state.view = 'about';
             controls.enabled = false;
-            gsap.to(camera.position, { duration: 3.0, x: -14, y: 10, z: -12, ease: "power2.inOut" });
-            gsap.to(controls.target, { duration: 3.0, x: 0, y: 0, z: 0, ease: "power2.inOut" });
-            gsap.to(state, { duration: 3.0, chaos: 1.0, expansion: 0.5, ease: "power2.out" });
+
+            // Fade out concept content first
+            const conceptSections = conceptUI.querySelectorAll('.concept-section');
+            conceptSections.forEach(sec => sec.classList.add('opacity-0'));
+
+            // Start camera movement after brief delay
+            setTimeout(() => {
+                gsap.to(camera.position, { duration: 3.5, x: -14, y: 10, z: -12, ease: "power2.inOut" });
+                gsap.to(controls.target, { duration: 3.5, x: 0, y: 0, z: 0, ease: "power2.inOut" });
+            }, 300);
+
+            // Chaos effect starts slightly delayed and slower
+            gsap.to(state, { duration: 4.0, chaos: 1.0, expansion: 0.5, ease: "power2.out", delay: 0.5 });
+
             btnHome.classList.replace('text-white', 'text-white/50');
             btnConcept.classList.replace('text-white', 'text-white/50');
             btnAbout.classList.replace('text-white/50', 'text-white');
             builderUI.classList.add('opacity-0', 'pointer-events-none');
-            conceptUI.classList.add('hidden');
-            aboutUI.classList.remove('hidden');
-            setTimeout(() => { aboutUI.classList.remove('opacity-0', 'translate-y-4'); }, 100);
+
+            // Hide concept and show Team after content fades
+            setTimeout(() => {
+                conceptUI.classList.add('hidden');
+                aboutUI.classList.remove('hidden');
+                setTimeout(() => { aboutUI.classList.remove('opacity-0', 'translate-y-4'); }, 200);
+            }, 600);
+
             conceptOverlay.classList.remove('opacity-0');
             conceptOverlay.classList.add('opacity-100');
         }
