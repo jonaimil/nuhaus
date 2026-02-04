@@ -92,8 +92,8 @@ input[type=range]:focus { outline: none; }
     <!-- 1. The Canvas -->
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
 
-    <!-- 2. Concept Overlay Layer -->
-    <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
+    <!-- 2. Concept Overlay Layer (disabled - may re-enable later) -->
+    <!-- <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div> -->
 
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-start p-6 md:p-16 md:pt-24 md:pb-40 hidden">
@@ -863,8 +863,8 @@ input[type=range]:focus { outline: none; }
             builderUI.classList.remove('opacity-0', 'pointer-events-none');
             conceptUI.classList.add('hidden');
             aboutUI.classList.add('hidden');
-            conceptOverlay.classList.remove('opacity-100');
-            conceptOverlay.classList.add('opacity-0');
+            conceptOverlay?.classList.remove('opacity-100');
+            conceptOverlay?.classList.add('opacity-0');
         }
 
         function setConceptState() {
@@ -881,8 +881,8 @@ input[type=range]:focus { outline: none; }
             builderUI.classList.add('opacity-0', 'pointer-events-none');
 
             // Start overlay fade
-            conceptOverlay.classList.remove('opacity-0');
-            conceptOverlay.classList.add('opacity-100');
+            conceptOverlay?.classList.remove('opacity-0');
+            conceptOverlay?.classList.add('opacity-100');
 
             // Expansion effect with delay
             gsap.to(state, { duration: 2.5, expansion: 1.2, chaos: 0, ease: "power2.out", delay: 0.3 });
@@ -926,8 +926,8 @@ input[type=range]:focus { outline: none; }
                 setTimeout(() => { aboutUI.classList.remove('opacity-0', 'translate-y-4'); }, 200);
             }, 600);
 
-            conceptOverlay.classList.remove('opacity-0');
-            conceptOverlay.classList.add('opacity-100');
+            conceptOverlay?.classList.remove('opacity-0');
+            conceptOverlay?.classList.add('opacity-100');
         }
 
         const scrollDown = document.getElementById('scroll-down');
