@@ -56,11 +56,36 @@ Co-living landing page for creative/technical people in Tokyo.
 - `text-white/40` — Secondary labels
 
 ### Layout
-- Concept content: left-aligned on all screen sizes
-- Desktop: text on left, 3D on right (no overlap)
+- Concept content: left-aligned on mobile, centered on desktop (`items-start md:items-center`)
+- Desktop: centered text block (`max-w-xl`), 3D building offset right via camera target
+- Team: compact Variant E layout — name + short descriptor left, role pill right
+- Both pages use `bg-black/60` overlay for text readability
+
+## Camera Architecture
+
+- **OrbitControls** drives camera only in Modeller (auto-rotate, user interaction)
+- **GSAP** drives camera in Concept and Team views — `controls.update()` is NOT called
+- `cameraTransitioning` flag prevents OrbitControls from fighting GSAP during Home transitions
+- `killActiveTransitions()` kills all GSAP tweens on state/camera/target before any view change
+- All camera positions stay in the same hemisphere (upper-right quadrant) — no 180° swings
+
+### Camera Positions (Desktop)
+| View | camera.position | controls.target |
+|------|----------------|-----------------|
+| Home | (16, 12, 16) | (0, 0, 0) |
+| Concept 0 | (10, 8, 14) | (-4, 3, 0) |
+| Concept 1 | (10, 5, 14) | (-4, 0, 0) |
+| Concept 2 | (10, 2, 14) | (-4, -3, 0) |
+| Team | (14, 14, 16) | (0, 2, 0) |
+
+## Residents
+
+- Each sprite has its **own material clone** (independent opacity, shared textures)
+- Direction flip swaps `.map` on the per-sprite material, not the whole material
+- Random initial facing direction
 
 ## Notes
 
 - Mobile skips SSAO, uses lower pixel ratio (1.0) to prevent WebGL context loss
 - All 3D logic is inline in index.html (no build step)
-- Concept overlay layer currently disabled (commented out)
+- Nav button event listeners use arrow functions to prevent Event object leaking as args
