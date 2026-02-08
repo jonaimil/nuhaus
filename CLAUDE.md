@@ -51,14 +51,14 @@ Co-living landing page for creative/technical people in Tokyo.
 
 ### Typography Colors
 - `text-white` — Headings, active nav
-- `text-white/60` — Body text, descriptions
-- `text-white/50` — Inactive nav items
-- `text-white/40` — Secondary labels
+- `text-white/60` — Body text, descriptions, role pills, tagline (all readable text)
+- `text-white/50` — Inactive nav items only
+- `text-white/40` — XY pad micro-labels only
 
 ### Layout
 - Concept content: left-aligned on mobile, centered on desktop (`items-start md:items-center`)
 - Desktop: centered text block (`max-w-xl`), 3D building offset right via camera target
-- Team: compact Variant E layout — name + short descriptor left, role pill right
+- Team: avatar + name/role-pill row, description below. Photos in `assets/` (circular thumbnails)
 - Both pages use `bg-black/60` overlay for text readability
 
 ## Camera Architecture
