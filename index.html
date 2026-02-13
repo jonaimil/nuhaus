@@ -8,7 +8,8 @@
 <style>
 @font-face {
     font-family: 'Frontier';
-    src: url('assets/fonts/Frontier.ttf') format('truetype');
+    src: url('assets/fonts/Frontier.woff2') format('woff2'),
+         url('assets/fonts/Frontier.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -16,7 +17,8 @@
 
 @font-face {
     font-family: 'Eurostile Extended';
-    src: url('assets/fonts/EurostileExtended.ttf') format('truetype');
+    src: url('assets/fonts/EurostileExtended.woff2') format('woff2'),
+         url('assets/fonts/EurostileExtended.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -24,7 +26,8 @@
 
 @font-face {
     font-family: 'Eurostile Extended';
-    src: url('assets/fonts/EurostileExtendedBlack.ttf') format('truetype');
+    src: url('assets/fonts/EurostileExtendedBlack.woff2') format('woff2'),
+         url('assets/fonts/EurostileExtendedBlack.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -33,7 +36,7 @@
 body {
     font-family: 'Frontier', sans-serif;
     overflow: hidden;
-    background-color: #050505;
+    background-color: #353E43;
     color: #e5e5e5;
     touch-action: none;
     -webkit-font-smoothing: antialiased;
@@ -113,7 +116,7 @@ input[type=range]:focus { outline: none; }
 }
 </script>
 </head>
-<body class="w-full h-full fixed inset-0 bg-[#050505] overflow-hidden select-none">
+<body class="w-full h-full fixed inset-0 bg-[#353E43] overflow-hidden select-none">
 
     <!-- 1. The Canvas -->
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
@@ -122,7 +125,7 @@ input[type=range]:focus { outline: none; }
     <canvas id="dot-grid" class="fixed inset-0 w-full h-full z-[0] pointer-events-none"></canvas>
 
     <!-- 2. Concept Overlay Layer -->
-    <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
+    <div id="concept-overlay" class="fixed inset-0 bg-[#353E43]/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
 
     <!-- 3. Concept Content Container -->
     <div id="concept-container" class="fixed inset-0 z-[20] pointer-events-none flex flex-col justify-center items-start md:items-center p-6 md:p-16 md:pt-24 md:pb-40 hidden">
@@ -218,9 +221,9 @@ input[type=range]:focus { outline: none; }
         <div class="flex flex-col md:w-auto pointer-events-auto w-full h-auto md:h-full justify-between z-[40]">
             <div class="flex flex-col mb-4 md:mb-0 space-y-2 order-1">
                 <div class="select-none cursor-pointer" onclick="window.location.reload()">
-                    <img id="logo-img" src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-6 md:h-8 w-auto invert">
+                    <img id="logo-img" src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-6 md:h-8 w-auto invert" style="transform: scaleX(1.07); transform-origin: left;">
                 </div>
-                <p id="tagline" class="leading-tight hidden md:block font-normal text-white/60 backdrop-blur-sm whitespace-nowrap" style="overflow:visible; font-family: 'Eurostile Extended', sans-serif;">Curated environments for creative,<br>technical and intentional minds</p>
+                <p id="tagline" class="leading-tight hidden md:block font-normal text-white/60 backdrop-blur-sm whitespace-nowrap" style="overflow:visible; font-family: 'Eurostile Extended', sans-serif;">Curated environments for creative, technical and intentional minds</p>
             </div>
 
             <nav class="flex flex-row md:flex-col space-x-6 md:space-x-0 md:space-y-3 order-2">
@@ -257,14 +260,14 @@ input[type=range]:focus { outline: none; }
                         <div class="absolute bottom-0 right-0 w-px h-1 bg-white/30"></div>
                         <div id="xy-thumb-desktop" class="absolute w-8 h-8 -ml-4 -mt-4 z-20 transition-all duration-300 ease-out pointer-events-none" style="left: 66%; top: 54%;">
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)] border border-white"></div>
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-black rounded-full"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-[#353E43] rounded-full"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile XY Pad -->
-            <div class="absolute bottom-0 left-0 w-full pointer-events-auto md:hidden flex flex-col items-center justify-end pb-14 px-8 bg-gradient-to-t from-black via-black/90 to-transparent h-[40vh] z-[50]">
+            <div class="absolute bottom-0 left-0 w-full pointer-events-auto md:hidden flex flex-col items-center justify-end pb-14 px-8 bg-gradient-to-t from-[#353E43] via-[#353E43]/90 to-transparent h-[40vh] z-[50]">
                 <div class="relative w-full aspect-[2/1] max-w-[400px]">
                     <div class="absolute -left-6 top-0 h-full flex flex-col justify-center items-end pr-2 pointer-events-none">
                         <span class="text-[10px] text-white/40 uppercase tracking-widest -rotate-90 origin-center whitespace-nowrap">Height</span>
@@ -285,7 +288,7 @@ input[type=range]:focus { outline: none; }
                         <!-- Thumb -->
                         <div id="xy-thumb" class="absolute w-8 h-8 -ml-4 -mt-4 z-20 top-1/2 left-1/2 transition-all duration-300 ease-out pointer-events-none" style="left: 66%; top: 54%;">
                              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)] border border-white"></div>
-                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-black rounded-full"></div>
+                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-[#353E43] rounded-full"></div>
                         </div>
                     </div>
                 </div>
@@ -310,7 +313,7 @@ input[type=range]:focus { outline: none; }
             blockWidth: 2,
             blockDepth: 1,
             colors: {
-                bg: 0x050505,
+                bg: 0x353E43,
                 blockColor: 0xffffff,
                 blockEmissive: 0xffffff,
             },
@@ -355,7 +358,7 @@ input[type=range]:focus { outline: none; }
 
         const scene = new THREE.Scene();
         scene.background = null;
-        renderer.setClearColor(0x000000, 0);
+        renderer.setClearColor(0x353E43, 0);
         scene.fog = new THREE.Fog(CONFIG.colors.bg, 10, 50);
 
         const camera = new THREE.PerspectiveCamera(IS_MOBILE ? 60 : 45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -1301,7 +1304,7 @@ input[type=range]:focus { outline: none; }
             lastFrame = time;
 
             ctx.globalAlpha = 1;
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = '#353E43';
             ctx.fillRect(0, 0, w, h);
 
             ctx.fillStyle = `rgb(${COLOR.r},${COLOR.g},${COLOR.b})`;
