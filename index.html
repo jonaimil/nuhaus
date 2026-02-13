@@ -6,16 +6,42 @@
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&display=swap');
+@font-face {
+    font-family: 'Frontier';
+    src: url('assets/fonts/Frontier.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eurostile Extended';
+    src: url('assets/fonts/EurostileExtended.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Eurostile Extended';
+    src: url('assets/fonts/EurostileExtendedBlack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
 
 body {
-    font-family: 'Afacad', sans-serif;
+    font-family: 'Frontier', sans-serif;
     overflow: hidden;
     background-color: #050505;
     color: #e5e5e5;
     touch-action: none;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Eurostile Extended', sans-serif;
 }
 
 /* Custom Range Slider Styling (Desktop) */
@@ -91,6 +117,9 @@ input[type=range]:focus { outline: none; }
 
     <!-- 1. The Canvas -->
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
+
+    <!-- 0.5. Dot Grid Background -->
+    <canvas id="dot-grid" class="fixed inset-0 w-full h-full z-[0] pointer-events-none"></canvas>
 
     <!-- 2. Concept Overlay Layer -->
     <div id="concept-overlay" class="fixed inset-0 bg-black/60 z-[5] pointer-events-none transition-opacity duration-1000 opacity-0"></div>
@@ -191,7 +220,7 @@ input[type=range]:focus { outline: none; }
                 <div class="select-none cursor-pointer" onclick="window.location.reload()">
                     <img id="logo-img" src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-6 md:h-8 w-auto invert">
                 </div>
-                <p id="tagline" class="leading-relaxed text-base md:text-lg hidden md:block font-normal text-white/60 max-w-md backdrop-blur-sm">Curated environments for the creative, technical and intentional minds</p>
+                <p id="tagline" class="leading-tight hidden md:block font-normal text-white/60 backdrop-blur-sm whitespace-nowrap" style="overflow:visible; font-family: 'Eurostile Extended', sans-serif;">Curated environments for creative,<br>technical and intentional minds</p>
             </div>
 
             <nav class="flex flex-row md:flex-col space-x-6 md:space-x-0 md:space-y-3 order-2">
@@ -314,7 +343,8 @@ input[type=range]:focus { outline: none; }
             antialias: false,
             powerPreference: "high-performance",
             stencil: false,
-            depth: true
+            depth: true,
+            alpha: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(dpr);
@@ -324,7 +354,8 @@ input[type=range]:focus { outline: none; }
         renderer.shadowMap.type = IS_MOBILE ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(CONFIG.colors.bg);
+        scene.background = null;
+        renderer.setClearColor(0x000000, 0);
         scene.fog = new THREE.Fog(CONFIG.colors.bg, 10, 50);
 
         const camera = new THREE.PerspectiveCamera(IS_MOBILE ? 60 : 45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -973,24 +1004,22 @@ input[type=range]:focus { outline: none; }
             sections.forEach((sec) => {
                 const h2 = sec.querySelector('h2');
                 const p = sec.querySelector('p');
-                gsap.to([h2, p], { opacity: 0, y: -10, duration: 0.5, ease: "power2.in" });
+                gsap.to([h2, p], { opacity: 0, y: -8, duration: 0.3, ease: "power2.in" });
             });
 
-            // Start camera movement after brief delay — stay in same hemisphere, pull back and up
-            setTimeout(() => {
-                gsap.to(camera.position, { duration: 3.5, x: 14, y: 14, z: 16, ease: "power2.inOut" });
-                gsap.to(controls.target, { duration: 3.5, x: 0, y: 2, z: 0, ease: "power2.inOut" });
-            }, 300);
+            // Camera movement — stay in same hemisphere, pull back and up
+            gsap.to(camera.position, { duration: 1.8, x: 14, y: 14, z: 16, ease: "power2.inOut", delay: 0.15 });
+            gsap.to(controls.target, { duration: 1.8, x: 0, y: 2, z: 0, ease: "power2.inOut", delay: 0.15 });
 
-            // Chaos effect starts slightly delayed and slower
-            gsap.to(state, { duration: 4.0, chaos: 1.0, expansion: 0.5, ease: "power2.out", delay: 0.5 });
+            // Chaos effect builds alongside camera
+            gsap.to(state, { duration: 2.2, chaos: 1.0, expansion: 0.5, ease: "power2.out", delay: 0.2 });
 
             btnHome.classList.replace('text-white', 'text-white/50');
             btnConcept.classList.replace('text-white', 'text-white/50');
             btnAbout.classList.replace('text-white/50', 'text-white');
             builderUI.classList.add('opacity-0', 'pointer-events-none');
 
-            // Hide concept and show Team after content fades
+            // Show Team content once concept fades
             setTimeout(() => {
                 conceptUI.classList.add('hidden');
                 sections.forEach(sec => sec.classList.add('opacity-0', 'translate-y-8'));
@@ -1000,14 +1029,14 @@ input[type=range]:focus { outline: none; }
                 const aboutHeader = aboutUI.querySelector('.mb-12');
                 const teamMembers = aboutUI.querySelectorAll('.group');
 
-                gsap.set([aboutHeader, ...teamMembers], { opacity: 0, y: 20 });
+                gsap.set([aboutHeader, ...teamMembers], { opacity: 0, y: 15 });
                 aboutUI.classList.remove('opacity-0', 'translate-y-4');
 
-                gsap.to(aboutHeader, { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: "power2.out" });
+                gsap.to(aboutHeader, { opacity: 1, y: 0, duration: 0.45, delay: 0.1, ease: "power2.out" });
                 teamMembers.forEach((member, i) => {
-                    gsap.to(member, { opacity: 1, y: 0, duration: 0.5, delay: 0.4 + (i * 0.1), ease: "power2.out" });
+                    gsap.to(member, { opacity: 1, y: 0, duration: 0.4, delay: 0.2 + (i * 0.08), ease: "power2.out" });
                 });
-            }, 500);
+            }, 350);
 
             conceptOverlay?.classList.remove('opacity-0');
             conceptOverlay?.classList.add('opacity-100');
@@ -1027,19 +1056,19 @@ input[type=range]:focus { outline: none; }
 
                     // Staggered fade-in for heading and paragraph
                     gsap.fromTo(h2,
-                        { opacity: 0, y: 20 },
-                        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
                     );
                     gsap.fromTo(p,
-                        { opacity: 0, y: 20 },
-                        { opacity: 1, y: 0, duration: 0.8, delay: 0.15, ease: "power2.out" }
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.5, delay: 0.08, ease: "power2.out" }
                     );
                 } else {
                     // Fade out elements first
                     gsap.to([h2, p], {
                         opacity: 0,
-                        y: -10,
-                        duration: 0.4,
+                        y: -8,
+                        duration: 0.25,
                         ease: "power2.in",
                         onComplete: () => {
                             sec.classList.add('opacity-0', 'translate-y-8');
@@ -1055,34 +1084,56 @@ input[type=range]:focus { outline: none; }
             const targetY = lift - (index * step);
             const isMobile = window.innerWidth < 768;
             const targetX = isMobile ? 0 : -4;
-            gsap.to(camera.position, { x: isMobile ? 12 : 10, y: targetY + 5, z: 14, duration: 1.2, ease: "power3.out" });
-            gsap.to(controls.target, { x: targetX, y: targetY, z: 0, duration: 1.2, ease: "power3.out" });
+            gsap.to(camera.position, { x: isMobile ? 12 : 10, y: targetY + 5, z: 14, duration: 0.8, ease: "power3.out" });
+            gsap.to(controls.target, { x: targetX, y: targetY, z: 0, duration: 0.8, ease: "power3.out" });
         }
 
         // Scroll Logic - Continuous scroll through pages
         let isScrolling = false;
         let touchStartY = 0;
+        let lastScrollTime = 0;
+        let scrollAccum = 0;
+        let scrollAccumTimer = null;
 
         window.addEventListener('wheel', (e) => {
             if (isScrolling) return;
-            if (Math.abs(e.deltaY) < 20) return;
-            const dir = e.deltaY > 0 ? 1 : -1;
-            handleScroll(dir);
-        });
+            const now = performance.now();
+            const velocity = Math.abs(e.deltaY);
 
-        window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: false });
+            // Accumulate rapid scroll events to detect fast flicks
+            if (now - lastScrollTime < 150) {
+                scrollAccum += velocity;
+            } else {
+                scrollAccum = velocity;
+            }
+            lastScrollTime = now;
+
+            if (velocity < 15) return;
+            const dir = e.deltaY > 0 ? 1 : -1;
+
+            // Fast scroll within concept can skip a section
+            if (state.view === 'concept' && scrollAccum > 300) {
+                const skip = Math.min(dir * 2, 2 - state.conceptIndex);
+                const skipBack = Math.max(dir * 2, -state.conceptIndex);
+                handleScroll(dir > 0 ? Math.max(skip, 1) : Math.min(skipBack, -1));
+            } else {
+                handleScroll(dir);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
         window.addEventListener('touchend', e => {
             if (isScrolling) return;
             const diff = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(diff) > 50) handleScroll(diff > 0 ? 1 : -1);
-        }, { passive: false });
+        }, { passive: true });
 
         function handleScroll(dir) {
             // From Modeller: scroll down → Concept
             if (state.view === 'index' && dir > 0) {
                 isScrolling = true;
                 setConceptState();
-                setTimeout(() => { isScrolling = false; }, 1200);
+                setTimeout(() => { isScrolling = false; }, 900);
                 return;
             }
             // From Concept: handle section navigation
@@ -1094,7 +1145,7 @@ input[type=range]:focus { outline: none; }
             if (state.view === 'about' && dir < 0) {
                 isScrolling = true;
                 setConceptState(2);
-                setTimeout(() => { isScrolling = false; }, 1200);
+                setTimeout(() => { isScrolling = false; }, 900);
                 return;
             }
         }
@@ -1104,22 +1155,23 @@ input[type=range]:focus { outline: none; }
             if (state.conceptIndex === 0 && dir < 0) {
                 isScrolling = true;
                 setHomeState();
-                setTimeout(() => { isScrolling = false; }, 1200);
+                setTimeout(() => { isScrolling = false; }, 900);
                 return;
             }
             // If at last section and scrolling down, go to Team page
             if (state.conceptIndex === 2 && dir > 0) {
                 isScrolling = true;
                 setAboutState();
-                setTimeout(() => { isScrolling = false; }, 800);
+                setTimeout(() => { isScrolling = false; }, 600);
                 return;
             }
+            // dir can be >1 for fast scroll skipping
             const nextIndex = Math.min(Math.max(state.conceptIndex + dir, 0), 2);
             if (nextIndex !== state.conceptIndex) {
                 isScrolling = true;
                 state.conceptIndex = nextIndex;
                 updateConceptSection(state.conceptIndex);
-                setTimeout(() => { isScrolling = false; }, 800);
+                setTimeout(() => { isScrolling = false; }, 450);
             }
         }
 
@@ -1142,16 +1194,159 @@ input[type=range]:focus { outline: none; }
         setHomeState();
         updateXYThumb();
 
-        // Sync tagline width to logo width
+        // Fit tagline text to logo width
         const logoImg = document.getElementById('logo-img');
         const tagline = document.getElementById('tagline');
-        function syncTaglineWidth() {
-            if (logoImg && tagline && logoImg.offsetWidth > 0) {
-                tagline.style.maxWidth = logoImg.offsetWidth + 'px';
-            }
+        function fitTagline() {
+            if (!logoImg || !tagline || logoImg.offsetWidth <= 0) return;
+            const targetWidth = logoImg.offsetWidth;
+            // Reset to measure natural width at a known font size
+            const testSize = 100;
+            tagline.style.fontSize = testSize + 'px';
+            const naturalWidth = tagline.scrollWidth;
+            // Scale font so text fills logo width
+            const fitSize = (targetWidth / naturalWidth) * testSize;
+            tagline.style.fontSize = fitSize + 'px';
         }
-        logoImg.addEventListener('load', syncTaglineWidth);
-        window.addEventListener('resize', syncTaglineWidth);
-        syncTaglineWidth();
+        logoImg.addEventListener('load', fitTagline);
+        window.addEventListener('resize', fitTagline);
+        fitTagline();
+    </script>
+
+    <!-- Dot Grid Background Effect -->
+    <script>
+    (function() {
+        const canvas = document.getElementById('dot-grid');
+        const ctx = canvas.getContext('2d');
+        const IS_MOBILE = window.innerWidth < 768;
+
+        const SPACING = IS_MOBILE ? 16 : 10;
+        const DOT_SIZE = IS_MOBILE ? 2.0 : 1.6;
+        const SPEED = 0.00006;
+        const COLOR = { r: 55, g: 110, b: 180 };
+
+        // Two focal points for organic feel
+        const FOCALS = [
+            { x: 0.58, y: 0.28, strength: 8 },   // primary — upper right
+            { x: 0.35, y: 0.65, strength: 14 },   // secondary — dimmer, lower left
+        ];
+
+        let w, h, cols, rows;
+        let mouse = { x: -1, y: -1 }; // normalized, -1 = offscreen
+        const CURSOR_STRENGTH = 6;
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX / window.innerWidth;
+            mouse.y = e.clientY / window.innerHeight;
+        });
+        document.addEventListener('mouseleave', () => { mouse.x = -1; mouse.y = -1; });
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            cols = Math.ceil(w / SPACING) + 1;
+            rows = Math.ceil(h / SPACING) + 1;
+        }
+
+        // --- Simplex 2D Noise ---
+        const perm = new Uint8Array(512);
+        const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+        (function seed() {
+            const p = new Uint8Array(256);
+            for (let i = 0; i < 256; i++) p[i] = i;
+            for (let i = 255; i > 0; i--) {
+                const j = (i * 16807 + 37) % (i + 1);
+                const tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+            }
+            for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+        })();
+
+        const F2 = 0.5 * (Math.sqrt(3) - 1);
+        const G2 = (3 - Math.sqrt(3)) / 6;
+
+        function noise2D(x, y) {
+            const s = (x + y) * F2;
+            const i = Math.floor(x + s);
+            const j = Math.floor(y + s);
+            const t = (i + j) * G2;
+            const x0 = x - (i - t), y0 = y - (j - t);
+            const i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+            const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+            const x2 = x0 - 1 + 2 * G2, y2 = y0 - 1 + 2 * G2;
+            const ii = i & 255, jj = j & 255;
+            const g0 = grad[perm[ii + perm[jj]] & 7];
+            const g1 = grad[perm[ii + i1 + perm[jj + j1]] & 7];
+            const g2 = grad[perm[ii + 1 + perm[jj + 1]] & 7];
+            let n0 = 0, n1 = 0, n2 = 0;
+            let t0 = 0.5 - x0 * x0 - y0 * y0;
+            if (t0 > 0) { t0 *= t0; n0 = t0 * t0 * (g0[0] * x0 + g0[1] * y0); }
+            let t1 = 0.5 - x1 * x1 - y1 * y1;
+            if (t1 > 0) { t1 *= t1; n1 = t1 * t1 * (g1[0] * x1 + g1[1] * y1); }
+            let t2 = 0.5 - x2 * x2 - y2 * y2;
+            if (t2 > 0) { t2 *= t2; n2 = t2 * t2 * (g2[0] * x2 + g2[1] * y2); }
+            return 70 * (n0 + n1 + n2);
+        }
+
+        function fbm(x, y) {
+            return noise2D(x, y) * 0.65 + noise2D(x * 2.0, y * 2.0) * 0.25 + noise2D(x * 4.0, y * 4.0) * 0.1;
+        }
+
+        // --- Render ---
+        let lastFrame = 0;
+        const FRAME_MS = 50; // ~20fps cap
+
+        function draw(time) {
+            requestAnimationFrame(draw);
+            if (time - lastFrame < FRAME_MS) return;
+            lastFrame = time;
+
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = `rgb(${COLOR.r},${COLOR.g},${COLOR.b})`;
+            const t = time * SPEED;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = c * SPACING;
+                    const y = r * SPACING;
+                    const nx = x / w;
+                    const ny = y / h;
+
+                    // Combined focal falloff
+                    let focal = 0;
+                    for (let f = 0; f < FOCALS.length; f++) {
+                        const dx = nx - FOCALS[f].x;
+                        const dy = ny - FOCALS[f].y;
+                        focal += Math.exp(-(dx * dx + dy * dy) * FOCALS[f].strength);
+                    }
+
+                    // Cursor focal point
+                    if (mouse.x >= 0) {
+                        const dx = nx - mouse.x;
+                        const dy = ny - mouse.y;
+                        focal += Math.exp(-(dx * dx + dy * dy) * CURSOR_STRENGTH);
+                    }
+
+                    // Skip dots that will be invisible anyway
+                    if (focal < 0.01) continue;
+
+                    const n = fbm(x * 0.004 + t, y * 0.004 + t * 0.6);
+                    const alpha = Math.min(1, focal * (n * 0.5 + 0.5) * 1.4);
+
+                    if (alpha > 0.01) {
+                        ctx.globalAlpha = alpha;
+                        ctx.fillRect(x, y, DOT_SIZE, DOT_SIZE);
+                    }
+                }
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+        requestAnimationFrame(draw);
+    })();
     </script>
 </body></html>
