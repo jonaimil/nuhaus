@@ -1,50 +1,29 @@
 <html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>NUHAUS - Creative Co-living in Tokyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Sans:wght@800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
-@font-face {
-    font-family: 'Frontier';
-    src: url('assets/fonts/Frontier.woff2') format('woff2'),
-         url('assets/fonts/Frontier.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Eurostile Extended';
-    src: url('assets/fonts/EurostileExtended.woff2') format('woff2'),
-         url('assets/fonts/EurostileExtended.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Eurostile Extended';
-    src: url('assets/fonts/EurostileExtendedBlack.woff2') format('woff2'),
-         url('assets/fonts/EurostileExtendedBlack.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
+/* Fonts loaded via Google Fonts link in <head> */
 
 body {
-    font-family: 'Frontier', sans-serif;
+    font-family: 'DM Mono', monospace;
     overflow: hidden;
     background-color: #353E43;
-    color: #e5e5e5;
+    color: #ffffff;
     touch-action: none;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Eurostile Extended', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 800;
 }
 
 /* Custom Range Slider Styling (Desktop) */
@@ -90,9 +69,22 @@ input[type=range]:focus { outline: none; }
     background-size: 33.33% 9.09%;
 }
 
+/* Noise overlay — canvas-based grain */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.12;
+    mix-blend-mode: overlay;
+}
+
 /* Utilities */
 .glass-panel {
-    background: rgba(10, 10, 10, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -118,6 +110,9 @@ input[type=range]:focus { outline: none; }
 </head>
 <body class="w-full h-full fixed inset-0 bg-[#353E43] overflow-hidden select-none">
 
+    <!-- Noise overlay (canvas-based grain) -->
+    <canvas id="noise-canvas" class="noise-overlay"></canvas>
+
     <!-- 1. The Canvas -->
     <canvas id="gl" class="absolute inset-0 w-full h-full z-[1] outline-none touch-none block"></canvas>
 
@@ -132,19 +127,19 @@ input[type=range]:focus { outline: none; }
         <div class="relative w-full max-w-4xl md:max-w-xl h-[400px]">
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700" id="c-sect-0" style="pointer-events: auto;">
                 <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">Should I Live in Japan?</h2>
-                <p class="text-base md:text-lg text-white/60 leading-relaxed font-normal max-w-2xl md:max-w-none">
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none">
                     You've thought about it. Maybe you've even dreamed about it. But there's a question you need to answer from experience, not imagination: Could I build a life in Japan?<br><br>Nuhaus is where you find out. Stay for weeks, not days. Experience daily life. Meet people asking the same question. You test your assumptions and discover what's real. When you decide, it will be through lived experience.
                 </p>
             </div>
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-1" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">How do I make the move?</h2>
-                <p class="text-base md:text-lg text-white/60 leading-relaxed font-normal max-w-2xl md:max-w-none">
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none">
                     We guide you with: visas, housing, employment, language and cultural navigation. Connecting you with the right people and resources, to community so you're never uncertain.<br><br>More importantly, we give you space to discover. Space to explore neighborhoods. Space to connect with collaborators. Space to figure out who you become when you build in Japan. That's the real work. We're here to support it.
                 </p>
             </div>
             <div class="concept-section absolute inset-0 flex flex-col justify-center items-start text-left transition-all duration-700 opacity-0 translate-y-8" id="c-sect-2" style="pointer-events: none;">
                 <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-5">Japan is Ready. Are You?</h2>
-                <p class="text-base md:text-lg text-white/60 leading-relaxed font-normal max-w-2xl md:max-w-none">
+                <p class="text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-2xl md:max-w-none">
                     Japan needs international talent. The government is opening doors. Companies are recruiting. The creative community is hungry for fresh perspectives. The timing has never been better.<br><br>Beyond what Japan needs, is what you need: people asking the same questions, a place to test your assumptions, a community ready to build with you. That's what we've created. Are you ready to explore what's possible?
                 </p>
             </div>
@@ -164,7 +159,7 @@ input[type=range]:focus { outline: none; }
             <!-- Header -->
             <div class="mb-12">
                 <h2 class="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight mb-4 hidden md:block">Team</h2>
-                <p class="text-white/60 text-base md:text-lg max-w-md">Architects and technologists building distributed living in Tokyo.</p>
+                <p class="text-white/80 text-base md:text-lg max-w-md">Architects and technologists building distributed living in Tokyo.</p>
             </div>
 
             <!-- Team Members -->
@@ -173,10 +168,10 @@ input[type=range]:focus { outline: none; }
                     <img src="assets/felix.jpg" alt="Felix Tao" class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-white/10 flex-shrink-0 mt-0.5">
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between mb-1.5">
-                            <h3 class="text-base md:text-xl font-medium text-white leading-tight">Felix Tao</h3>
-                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/60 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Founder</span>
+                            <h3 class="text-base md:text-xl font-medium text-white leading-tight flex items-center gap-2">Felix Tao<a href="https://www.instagram.com/taofelix/" target="_blank" rel="noopener" class="inline-flex items-center text-white/60 hover:text-white transition-colors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a></h3>
+                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Founder</span>
                         </div>
-                        <p class="text-white/60 text-xs md:text-sm leading-relaxed">Engineer, designer, and cultural operator working across technology and creative practice.</p>
+                        <p class="text-white/80 text-xs md:text-sm leading-relaxed">Engineer, designer, and cultural operator working across technology and creative practice.</p>
                     </div>
                 </div>
                 <div class="group py-4 border-t border-white/10 -mx-4 px-4 rounded-lg hover:bg-white/[0.03] transition-colors cursor-pointer flex items-start gap-3.5">
@@ -184,9 +179,9 @@ input[type=range]:focus { outline: none; }
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between mb-1.5">
                             <h3 class="text-base md:text-xl font-medium text-white leading-tight">Jon Aimil</h3>
-                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/60 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Digital Design &amp; Operations</span>
+                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Design &amp; Operations</span>
                         </div>
-                        <p class="text-white/60 text-xs md:text-sm leading-relaxed">Bilingual digital designer and operations lead</p>
+                        <p class="text-white/80 text-xs md:text-sm leading-relaxed">Bilingual digital designer and operations lead</p>
                     </div>
                 </div>
                 <div class="group py-4 border-t border-white/10 -mx-4 px-4 rounded-lg hover:bg-white/[0.03] transition-colors cursor-pointer flex items-start gap-3.5">
@@ -194,9 +189,9 @@ input[type=range]:focus { outline: none; }
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between mb-1.5">
                             <h3 class="text-base md:text-xl font-medium text-white leading-tight">Ila Orbis</h3>
-                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/60 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Audio-Video Producer &amp; Director</span>
+                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">AV Director</span>
                         </div>
-                        <p class="text-white/60 text-xs md:text-sm leading-relaxed">Artist and music producer working across sound, 3D animation, and design.</p>
+                        <p class="text-white/80 text-xs md:text-sm leading-relaxed">Artist and music producer working across sound, 3D animation, and design.</p>
                     </div>
                 </div>
                 <div class="group py-4 border-t border-white/10 border-b -mx-4 px-4 rounded-lg hover:bg-white/[0.03] transition-colors cursor-pointer flex items-start gap-3.5">
@@ -204,9 +199,9 @@ input[type=range]:focus { outline: none; }
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between mb-1.5">
                             <h3 class="text-base md:text-xl font-medium text-white leading-tight">Armyan Nispel</h3>
-                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/60 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Art Director</span>
+                            <span class="text-[10px] md:text-xs uppercase tracking-wider text-white/80 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">Art Director</span>
                         </div>
-                        <p class="text-white/60 text-xs md:text-sm leading-relaxed">Artist exploring inner experience through painting, informed by Jungian psychology.</p>
+                        <p class="text-white/80 text-xs md:text-sm leading-relaxed">Artist exploring inner experience through painting, informed by Jungian psychology.</p>
                     </div>
                 </div>
             </div>
@@ -223,14 +218,14 @@ input[type=range]:focus { outline: none; }
                 <div class="select-none cursor-pointer" onclick="window.location.reload()">
                     <img id="logo-img" src="assets/NUHAUSlogo.svg" alt="NUHAUS" class="h-6 md:h-8 w-auto invert" style="transform: scaleX(1.07); transform-origin: left;">
                 </div>
-                <p id="tagline" class="leading-tight hidden md:block font-normal text-white/60 backdrop-blur-sm whitespace-nowrap" style="overflow:visible; font-family: 'Eurostile Extended', sans-serif;">Curated environments for creative, technical and intentional minds</p>
+                <p id="tagline" class="leading-tight hidden md:block font-normal text-white/80 backdrop-blur-sm whitespace-nowrap" style="overflow:visible; font-family: 'DM Mono', monospace; font-weight: 400;">Curated environments for creative, technical and intentional minds</p>
             </div>
 
             <nav class="flex flex-row md:flex-col space-x-6 md:space-x-0 md:space-y-3 order-2">
                 <button id="nav-home" class="text-left text-white hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Modeller</button>
                 <button id="nav-concept" class="text-left text-white/50 hover:text-white transition-opacity duration-300 md:text-2xl leading-tight text-lg font-normal tracking-tight">Concept</button>
                 <button id="nav-about" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Team</button>
-                <a id="nav-connect" href="#" target="_blank" rel="noopener" class="text-left text-white/50 hover:text-white transition-opacity duration-300 font-normal text-lg md:text-2xl leading-tight tracking-tight">Connect</a>
+
             </nav>
         </div>
 
@@ -1197,18 +1192,16 @@ input[type=range]:focus { outline: none; }
         setHomeState();
         updateXYThumb();
 
-        // Fit tagline text to logo width
+        // Fit tagline text to logo width (scale: 1.10)
         const logoImg = document.getElementById('logo-img');
         const tagline = document.getElementById('tagline');
         function fitTagline() {
             if (!logoImg || !tagline || logoImg.offsetWidth <= 0) return;
             const targetWidth = logoImg.offsetWidth;
-            // Reset to measure natural width at a known font size
             const testSize = 100;
             tagline.style.fontSize = testSize + 'px';
             const naturalWidth = tagline.scrollWidth;
-            // Scale font so text fills logo width
-            const fitSize = (targetWidth / naturalWidth) * testSize;
+            const fitSize = (targetWidth / naturalWidth) * testSize * 1.10;
             tagline.style.fontSize = fitSize + 'px';
         }
         logoImg.addEventListener('load', fitTagline);
@@ -1352,4 +1345,42 @@ input[type=range]:focus { outline: none; }
         requestAnimationFrame(draw);
     })();
     </script>
+
+    <!-- Noise grain engine -->
+    <script>
+    (function() {
+        const canvas = document.getElementById('noise-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawNoise();
+        }
+
+        function drawNoise() {
+            const w = canvas.width, h = canvas.height;
+            const imageData = ctx.createImageData(w, h);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const v = Math.random() * 255;
+                data[i] = v;
+                data[i + 1] = v;
+                data[i + 2] = v;
+                data[i + 3] = 255;
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function loop() {
+            drawNoise();
+            requestAnimationFrame(loop);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        loop();
+    })();
+    </script>
+
 </body></html>
